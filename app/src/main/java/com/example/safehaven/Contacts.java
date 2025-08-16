@@ -1,5 +1,6 @@
 package com.example.safehaven;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -7,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Contacts extends AppCompatActivity {
 
@@ -20,5 +23,37 @@ public class Contacts extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        // Set selected item for the current activity
+        bottomNavigationView.setSelectedItemId(R.id.nav_contacts);
+
+        // Set listener for item selection
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_contacts) {
+                return true;
+            } else if (itemId == R.id.nav_guides) {
+                startActivity(new Intent(getApplicationContext(), SurvivalGuides.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_recover) {
+                startActivity(new Intent(getApplicationContext(), Recover.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(getApplicationContext(), Home.class));
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            return false;
+        });
+
+        findViewById(R.id.settings).setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), Settings.class));
+            overridePendingTransition(0, 0);
+        });
+
     }
 }

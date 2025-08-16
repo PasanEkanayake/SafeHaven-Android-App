@@ -25,27 +25,34 @@ public class SurvivalGuides extends AppCompatActivity {
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home); // highlight home by default
 
+        // Set selected item for the current activity
+        bottomNavigationView.setSelectedItemId(R.id.nav_guides);
+
+        // Set listener for item selection
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.nav_home:
-                    // Already on home, do nothing or restart
-                    return true;
-                case R.id.nav_guides:
-                    startActivity(new Intent(getApplicationContext(), SurvivalGuides.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.nav_recover:
-                    startActivity(new Intent(getApplicationContext(), Recover.class));
-                    overridePendingTransition(0, 0);
-                    return true;
-                case R.id.nav_contacts:
-                    startActivity(new Intent(getApplicationContext(), Contacts.class));
-                    overridePendingTransition(0, 0);
-                    return true;
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_guides) {
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(getApplicationContext(), Home.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_recover) {
+                startActivity(new Intent(getApplicationContext(), Recover.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_contacts) {
+                startActivity(new Intent(getApplicationContext(), Contacts.class));
+                overridePendingTransition(0, 0);
+                return true;
             }
             return false;
+        });
+
+        findViewById(R.id.settings).setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), Settings.class));
+            overridePendingTransition(0, 0);
         });
 
     }
