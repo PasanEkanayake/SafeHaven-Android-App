@@ -23,8 +23,9 @@
             <!-- Top Bar -->
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:padding="10dp">
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginTop="15dp">
 
                 <ImageView
                     android:id="@+id/logo"
@@ -46,20 +47,29 @@
                 android:id="@+id/welcomeMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
                 android:text="Welcome to SafeHaven!"
+                android:textStyle="bold"
                 android:textSize="22sp"
                 android:paddingStart="16dp"
                 android:textColor="#000"/>
 
             <!-- Emergency Contacts -->
-            <Button
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Emergency Contacts"
-                android:textColor="#fff"
-                android:textStyle="bold"
-                android:background="#259531"
-                android:layout_margin="16dp"/>
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Emergency Contacts"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:background="@drawable/rounded_button"
+                    android:layout_margin="16dp" />
+            </GridLayout>
 
             <!-- Four Cards -->
             <GridLayout
@@ -72,6 +82,7 @@
 
                 <!-- Card 1 -->
                 <LinearLayout
+                    android:id="@+id/survivalguides"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -90,6 +101,7 @@
                         android:layout_height="wrap_content"
                         android:text="Survival Guides"
                         android:textColor="#fff"
+                        android:textSize="18sp"
                         android:gravity="center"
                         android:paddingTop="10dp"/>
                 </LinearLayout>
@@ -114,6 +126,7 @@
                         android:layout_height="wrap_content"
                         android:text="Disaster Types"
                         android:textColor="#fff"
+                        android:textSize="18sp"
                         android:gravity="center"
                         android:paddingTop="10dp"/>
                 </LinearLayout>
@@ -137,6 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Post Disaster Guides"
+                        android:textSize="18sp"
                         android:textColor="#fff"
                         android:gravity="center"
                         android:paddingTop="10dp"/>
@@ -160,8 +174,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Weather Map"
+                        android:text="Important Locations"
                         android:textColor="#fff"
+                        android:textSize="18sp"
                         android:gravity="center"
                         android:paddingTop="10dp"/>
                 </LinearLayout>
@@ -200,13 +215,20 @@
             </HorizontalScrollView>
 
             <!-- Read More Button -->
-            <Button
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:text="Read more guides"
-                android:background="#259531"
-                android:textColor="#fff"/>
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Read more guides"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:background="@drawable/rounded_button"
+                    android:layout_margin="16dp" />
+            </GridLayout>
 
             <!-- Latest News Section -->
             <TextView
@@ -243,13 +265,20 @@
             </LinearLayout>
 
             <!-- More News Articles -->
-            <Button
+            <GridLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="More News Articles"
-                android:background="#2E75B6"
-                android:textColor="#fff"/>
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="More News Articles"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:background="@drawable/rounded_button"
+                    android:layout_margin="16dp" />
+            </GridLayout>
         </LinearLayout>
     </ScrollView>
 
