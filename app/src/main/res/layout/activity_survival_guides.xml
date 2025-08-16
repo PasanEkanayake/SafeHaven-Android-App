@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ACD696"
+    tools:context=".SurvivalGuides">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_logo_2"
+            android:contentDescription="@string/app_name" />
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="SafeHaven"-->
+<!--            android:fontFamily="@font/poppins_bold"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="24sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginStart="8dp" />-->
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_settings"
+            android:contentDescription="settings" />
+    </LinearLayout>
+
+    <!-- Grid of Buttons -->
+    <GridLayout
+        android:id="@+id/guidesGrid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        android:columnCount="2"
+        android:rowCount="3"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- First Aids -->
+        <LinearLayout
+            style="@style/GuideButtonStyle"
+            android:onClick="onFirstAidClick">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_first_aid" />
+            <TextView
+                style="@style/GuideTextStyle"
+                android:text="First Aids" />
+        </LinearLayout>
+
+        <!-- Floods -->
+        <LinearLayout
+            style="@style/GuideButtonStyle"
+            android:onClick="onFloodsClick">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_flood" />
+            <TextView
+                style="@style/GuideTextStyle"
+                android:text="Floods" />
+        </LinearLayout>
+
+        <!-- Landslides -->
+        <LinearLayout
+            style="@style/GuideButtonStyle"
+            android:onClick="onLandslidesClick">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_landslide" />
+            <TextView
+                style="@style/GuideTextStyle"
+                android:text="Landslides" />
+        </LinearLayout>
+
+        <!-- Cyclones -->
+<!--        <LinearLayout-->
+<!--            style="@style/GuideButtonStyle"-->
+<!--            android:onClick="onCyclonesClick">-->
+<!--            <ImageView-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:src="@drawable/ic_cyclone" />-->
+<!--            <TextView-->
+<!--                style="@style/GuideTextStyle"-->
+<!--                android:text="Cyclones" />-->
+<!--        </LinearLayout>-->
+
+        <!-- Droughts -->
+<!--        <LinearLayout-->
+<!--            style="@style/GuideButtonStyle"-->
+<!--            android:onClick="onDroughtsClick">-->
+<!--            <ImageView-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:src="@drawable/ic_drought" />-->
+<!--            <TextView-->
+<!--                style="@style/GuideTextStyle"-->
+<!--                android:text="Droughts" />-->
+<!--        </LinearLayout>-->
+
+        <!-- Tsunamis -->
+<!--        <LinearLayout-->
+<!--            style="@style/GuideButtonStyle"-->
+<!--            android:onClick="onTsunamisClick">-->
+<!--            <ImageView-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:src="@drawable/ic_tsunami" />-->
+<!--            <TextView-->
+<!--                style="@style/GuideTextStyle"-->
+<!--                android:text="Tsunamis" />-->
+<!--        </LinearLayout>-->
+    </GridLayout>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            style="@style/BottomNavItem"
+            android:onClick="onHomeClick">
+            <ImageView android:src="@drawable/ic_home" android:layout_width="35dp" android:layout_height="35dp"/>
+            <TextView android:text="Home" style="@style/BottomNavText"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/BottomNavItem"
+            android:background="#3784CB">
+            <ImageView android:src="@drawable/ic_guides" android:layout_width="35dp" android:layout_height="35dp"/>
+            <TextView android:text="Guides" style="@style/BottomNavText"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/BottomNavItem"
+            android:onClick="onRecoverClick">
+            <ImageView android:src="@drawable/ic_recover" android:layout_width="35dp" android:layout_height="35dp"/>
+            <TextView android:text="Recover" style="@style/BottomNavText"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/BottomNavItem"
+            android:onClick="onContactsClick">
+            <ImageView android:src="@drawable/ic_contacts" android:layout_width="35dp" android:layout_height="35dp"/>
+            <TextView android:text="Contacts" style="@style/BottomNavText"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
