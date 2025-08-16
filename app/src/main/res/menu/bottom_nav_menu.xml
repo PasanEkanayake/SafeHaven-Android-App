@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"
+        android:iconTint="#3784CB"/>
+    <item
+        android:id="@+id/nav_guides"
+        android:icon="@drawable/ic_guides"
+        android:title="Guides"
+        android:iconTint="#3784CB"/>
+    <item
+        android:id="@+id/nav_recover"
+        android:icon="@drawable/ic_recover"
+        android:title="Recover"
+        android:iconTint="#3784CB"/>
+    <item
+        android:id="@+id/nav_contacts"
+        android:icon="@drawable/ic_contacts"
+        android:title="Contacts"
+        android:iconTint="#3784CB"/>
+</menu>

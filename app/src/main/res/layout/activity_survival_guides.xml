@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ACD696"
-    tools:context=".SurvivalGuides">
+    android:id="@+id/main"
+    tools:context=".GuidesActivity">
 
     <!-- Top Bar -->
     <LinearLayout
@@ -24,16 +25,6 @@
             android:layout_height="50dp"
             android:src="@drawable/ic_logo_2"
             android:contentDescription="@string/app_name" />
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="SafeHaven"-->
-<!--            android:fontFamily="@font/poppins_bold"-->
-<!--            android:textColor="@android:color/black"-->
-<!--            android:textSize="24sp"-->
-<!--            android:textStyle="bold"-->
-<!--            android:layout_marginStart="8dp" />-->
 
         <View
             android:layout_width="0dp"
@@ -98,45 +89,6 @@
                 style="@style/GuideTextStyle"
                 android:text="Landslides" />
         </LinearLayout>
-
-        <!-- Cyclones -->
-<!--        <LinearLayout-->
-<!--            style="@style/GuideButtonStyle"-->
-<!--            android:onClick="onCyclonesClick">-->
-<!--            <ImageView-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:src="@drawable/ic_cyclone" />-->
-<!--            <TextView-->
-<!--                style="@style/GuideTextStyle"-->
-<!--                android:text="Cyclones" />-->
-<!--        </LinearLayout>-->
-
-        <!-- Droughts -->
-<!--        <LinearLayout-->
-<!--            style="@style/GuideButtonStyle"-->
-<!--            android:onClick="onDroughtsClick">-->
-<!--            <ImageView-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:src="@drawable/ic_drought" />-->
-<!--            <TextView-->
-<!--                style="@style/GuideTextStyle"-->
-<!--                android:text="Droughts" />-->
-<!--        </LinearLayout>-->
-
-        <!-- Tsunamis -->
-<!--        <LinearLayout-->
-<!--            style="@style/GuideButtonStyle"-->
-<!--            android:onClick="onTsunamisClick">-->
-<!--            <ImageView-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:src="@drawable/ic_tsunami" />-->
-<!--            <TextView-->
-<!--                style="@style/GuideTextStyle"-->
-<!--                android:text="Tsunamis" />-->
-<!--        </LinearLayout>-->
     </GridLayout>
 
     <!-- Bottom Navigation -->

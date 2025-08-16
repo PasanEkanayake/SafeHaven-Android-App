@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main"
+    android:background="#A9D18E">
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Top Bar -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_logo_2"
+                    android:contentDescription="@string/app_name" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_settings"/>
+            </RelativeLayout>
+
+            <!-- Greeting -->
+            <TextView
+                android:id="@+id/welcomeMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome to SafeHaven!"
+                android:textSize="22sp"
+                android:paddingStart="16dp"
+                android:textColor="#000"/>
+
+            <!-- Emergency Contacts -->
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="Emergency Contacts"
+                android:textColor="#fff"
+                android:textStyle="bold"
+                android:background="#259531"
+                android:layout_margin="16dp"/>
+
+            <!-- Four Cards -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <!-- Card 1 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:background="@drawable/rounded_card"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_guides" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Survival Guides"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:paddingTop="10dp"/>
+                </LinearLayout>
+
+                <!-- Card 2 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:background="@drawable/rounded_card"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_disaster_types" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Disaster Types"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:paddingTop="10dp"/>
+                </LinearLayout>
+
+                <!-- Card 3 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:background="@drawable/rounded_card"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_recover" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Post Disaster Guides"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:paddingTop="10dp"/>
+                </LinearLayout>
+
+                <!-- Card 4 -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="8dp"
+                    android:padding="12dp"
+                    android:gravity="center"
+                    android:background="@drawable/rounded_card"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ic_weather" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Weather Map"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:paddingTop="10dp"/>
+                </LinearLayout>
+            </GridLayout>
+
+            <!-- Be Ready Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📘 Be Ready for Anything"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingStart="16dp"
+                android:textColor="#000"/>
+
+            <!-- Image Cards -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="8dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="160dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="8dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/flood_img_1"
+                        android:contentDescription="@null"
+                        android:importantForAccessibility="no"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Read More Button -->
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Read more guides"
+                android:background="#259531"
+                android:textColor="#fff"/>
+
+            <!-- Latest News Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📰 Latest News"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:padding="16dp"
+                android:textColor="#000"/>
+
+            <!-- News Cards -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/flood_img_1" />
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/flood_img_1" />
+            </LinearLayout>
+
+            <!-- More News Articles -->
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="More News Articles"
+                android:background="#2E75B6"
+                android:textColor="#fff"/>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Footer (Always Visible) -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#3784CB"
+        app:menu="@menu/bottom_nav_menu"/>
+</LinearLayout>
