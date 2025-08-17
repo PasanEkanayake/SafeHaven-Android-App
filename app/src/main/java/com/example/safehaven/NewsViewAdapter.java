@@ -1,58 +1,43 @@
 package com.example.safehaven;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
+public class NewsViewAdapter extends RecyclerView.Adapter<NewsViewAdapter.NewsViewHolder> {
 
     private Context context;
     private List<News> newsList;
-    private List<String> keys; // Firebase keys
-    private DatabaseReference dbRef;
 
-    public NewsAdapter(Context context, List<News> newsList, List<String> keys) {
+    public NewsViewAdapter(Context context, List<News> newsList) {
         this.context = context;
         this.newsList = newsList;
-        this.keys = keys;
-        dbRef = FirebaseDatabase.getInstance().getReference("LatestNews");
     }
 
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_news, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.news_item, parent, false);
         return new NewsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         News news = newsList.get(position);
-        String key = keys.get(position);
 
         holder.newsTitle.setText(news.getTitle());
 
-        // Truncate the news body (first 100 characters only)
+        // Truncate body to 100 chars
         String body = news.getNewsBody();
         if (body != null && body.length() > 100) {
             holder.newsBody.setText(body.substring(0, 100) + "...");
@@ -62,16 +47,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         holder.newsVideoLink.setText(news.getVideoLink());
 
-        // Load image with Glide
-        Glide.with(context).load(news.getImageUrl()).into(holder.newsImage);
-
-        holder.btnDelete.setOnClickListener(v -> {
-            dbRef.child(key).removeValue()
-                    .addOnSuccessListener(aVoid ->
-                            Toast.makeText(context, "News deleted!", Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(e ->
-                            Toast.makeText(context, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-        });
+        Glide.with(context)
+                .load(news.getImageUrl())
+                .placeholder(android.R.drawable.ic_menu_report_image)
+                .into(holder.newsImage);
     }
 
     @Override
@@ -82,7 +61,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
         ImageView newsImage;
         TextView newsTitle, newsBody, newsVideoLink;
-        Button btnDelete;
 
         public NewsViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,7 +68,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             newsTitle = itemView.findViewById(R.id.newsTitle);
             newsBody = itemView.findViewById(R.id.newsBody);
             newsVideoLink = itemView.findViewById(R.id.newsVideoLink);
-            btnDelete = itemView.findViewById(R.id.btnDeleteNews);
         }
     }
 }

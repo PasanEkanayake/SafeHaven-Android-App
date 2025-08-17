@@ -14,12 +14,26 @@
         android:padding="10dp"
         android:layout_marginTop="15dp">
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_logo_2"
-            android:contentDescription="@string/app_name" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_back_arrow"
+                android:contentDescription="Back"/>
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_logo_2"
+                android:contentDescription="@string/app_name" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/settings"
@@ -77,31 +91,29 @@
                     android:layout_height="50dp"
                     android:layout_marginBottom="20dp"/>
 
-                <!-- Before Disaster PDF -->
-                <Button
-                    android:id="@+id/btnUploadBefore"
+                <!-- Before Survival Guide -->
+                <EditText
+                    android:id="@+id/beforeGuide"
+                    android:hint="Enter Before Survival Guide"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Upload Before Disaster PDF"/>
-                <TextView
-                    android:id="@+id/tvBeforePdf"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="No file selected"
-                    android:paddingBottom="12dp"/>
+                    android:layout_height="150dp"
+                    android:gravity="top"
+                    android:background="@android:color/white"
+                    android:padding="10dp"
+                    android:layout_marginBottom="16dp"
+                    android:inputType="textMultiLine"/>
 
-                <!-- After Disaster PDF -->
-                <Button
-                    android:id="@+id/btnUploadAfter"
+                <!-- During Survival Guide -->
+                <EditText
+                    android:id="@+id/duringGuide"
+                    android:hint="Enter During Survival Guide"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Upload After Disaster PDF"/>
-                <TextView
-                    android:id="@+id/tvAfterPdf"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="No file selected"
-                    android:paddingBottom="12dp"/>
+                    android:layout_height="150dp"
+                    android:gravity="top"
+                    android:background="@android:color/white"
+                    android:padding="10dp"
+                    android:layout_marginBottom="16dp"
+                    android:inputType="textMultiLine"/>
 
                 <!-- YouTube Video Link -->
                 <EditText
@@ -118,15 +130,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Update"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/rounded_button"
-                    android:textColor="@android:color/white"/>
-
-                <Button
-                    android:id="@+id/btnBack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Back to Admin Panel"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/rounded_button"
                     android:textColor="@android:color/white"/>

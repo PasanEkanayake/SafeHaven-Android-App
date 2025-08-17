@@ -5,35 +5,40 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class DisasterTypes extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    private ImageView settingsButton, btnBack;
+public class ViewNewsArticles extends AppCompatActivity {
+
+    private ImageView btnBack;
+    RecyclerView recyclerView;
+    NewsViewAdapter adapter;
+    List<News> newsList;
+    DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_disaster_types);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        setContentView(R.layout.activity_view_news_articles);
 
         btnBack = findViewById(R.id.btnBack);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DisasterTypes.this, Home.class);
+                Intent intent = new Intent(ViewNewsArticles.this, Home.class);
                 startActivity(intent);
             }
         });
@@ -74,12 +79,30 @@ public class DisasterTypes extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        settingsButton = findViewById(R.id.settings);
-        // Go to Settings Page
-        settingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(DisasterTypes.this, Settings.class);
-            startActivity(intent);
-        });
+        recyclerView = findViewById(R.id.newsRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        newsList = new ArrayList<>();
+        adapter = new NewsViewAdapter(this, newsList);
+        recyclerView.setAdapter(adapter);
+
+        dbRef = FirebaseDatabase.getInstance().getReference("LatestNews");
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                newsList.clear();
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    News news = data.getValue(News.class);
+                    if (news != null) {
+                        newsList.add(news);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
     }
 }

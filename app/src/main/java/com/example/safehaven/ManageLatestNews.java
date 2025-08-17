@@ -1,12 +1,6 @@
 package com.example.safehaven;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,34 +9,39 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ManageLatestNews extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private ImageView newsImageView;
-    private Button btnSelectImage, btnSaveNews, btnBack;
-    private EditText editNewsBody, editVideoLink;
+    private EditText editImageUrl, editNewsTitle, editNewsBody, editVideoLink;
+    private Button btnSaveNews;
+    private ImageView btnBack;
     private ProgressBar progressBar;
 
-    private Uri imageUri;
-    private StorageReference storageRef;
-    private DatabaseReference databaseRef;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_latest_news);
+
+        btnBack = findViewById(R.id.btnBack);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ManageLatestNews.this, AdminPanel.class);
+                startActivity(intent);
+            }
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -80,110 +79,69 @@ public class ManageLatestNews extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        newsImageView = findViewById(R.id.newsImageView);
-        btnSelectImage = findViewById(R.id.btnSelectImage);
-        btnSaveNews = findViewById(R.id.btnSaveNews);
+        // Initialize Views
+        editImageUrl = findViewById(R.id.imageUrl);
+        editNewsTitle = findViewById(R.id.editNewsTitle);
         editNewsBody = findViewById(R.id.editNewsBody);
         editVideoLink = findViewById(R.id.editVideoLink);
+        btnSaveNews = findViewById(R.id.btnSaveNews);
         progressBar = findViewById(R.id.progressBar);
 
-        storageRef = FirebaseStorage.getInstance().getReference("LatestNews");
-        databaseRef = FirebaseDatabase.getInstance().getReference("LatestNews");
-
-        btnSelectImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFileChooser();
-            }
-        });
+        // Initialize Firebase Database reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("LatestNews");
 
         btnSaveNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveNews();
+                uploadNews();
             }
         });
     }
 
-    private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
+    private void uploadNews() {
+        String imageUrl = editImageUrl.getText().toString().trim();
+        String title = editNewsTitle.getText().toString().trim();
+        String newsBody = editNewsBody.getText().toString().trim();
+        String videoLink = editVideoLink.getText().toString().trim();
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            newsImageView.setImageURI(imageUri);
-        }
-    }
-
-    private void saveNews() {
-        final String newsBody = editNewsBody.getText().toString().trim();
-        final String videoLink = editVideoLink.getText().toString().trim();
-
-        if (newsBody.isEmpty()) {
-            editNewsBody.setError("News body required");
-            editNewsBody.requestFocus();
-            return;
-        }
-
-        if (imageUri == null) {
-            Toast.makeText(this, "Please select an image", Toast.LENGTH_SHORT).show();
+        if (title.isEmpty() || newsBody.isEmpty() || imageUrl.isEmpty()) {
+            Toast.makeText(this, "Title, Body and Image URL are required!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         progressBar.setVisibility(View.VISIBLE);
+        btnSaveNews.setEnabled(false);
 
-        final StorageReference fileRef = storageRef.child(System.currentTimeMillis() + ".jpg");
-        fileRef.putFile(imageUri)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String imageUrl = uri.toString();
+        // Generate a unique key for each news item
+        String newsId = databaseReference.push().getKey();
 
-                                String key = databaseRef.push().getKey();
-                                Map<String, Object> newsData = new HashMap<>();
-                                newsData.put("imageUrl", imageUrl);
-                                newsData.put("newsBody", newsBody);
-                                newsData.put("videoLink", videoLink.isEmpty() ? null : videoLink);
+        // Create a map for the news item
+        Map<String, Object> newsMap = new HashMap<>();
+        newsMap.put("title", title);
+        newsMap.put("newsBody", newsBody);
+        newsMap.put("videoLink", videoLink);
+        newsMap.put("imageUrl", imageUrl);
 
-                                if (key != null) {
-                                    databaseRef.child(key).setValue(newsData)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void unused) {
-                                                    progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(ManageLatestNews.this, "News uploaded successfully", Toast.LENGTH_SHORT).show();
-                                                    editNewsBody.setText("");
-                                                    editVideoLink.setText("");
-                                                    newsImageView.setImageResource(android.R.color.darker_gray);
-                                                    imageUri = null;
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    progressBar.setVisibility(View.GONE);
-                                                    Toast.makeText(ManageLatestNews.this, "Failed to upload news", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                }
-                            }
-                        });
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(ManageLatestNews.this, "Image upload failed", Toast.LENGTH_SHORT).show();
-                });
+        if (newsId != null) {
+            databaseReference.child(newsId).setValue(newsMap)
+                    .addOnCompleteListener(task -> {
+                        progressBar.setVisibility(View.GONE);
+                        btnSaveNews.setEnabled(true);
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ManageLatestNews.this, "News uploaded successfully!", Toast.LENGTH_SHORT).show();
+                            clearFields();
+                        } else {
+                            Toast.makeText(ManageLatestNews.this, "Failed to upload news: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
+    }
+
+    private void clearFields() {
+        editImageUrl.setText("");
+        editNewsTitle.setText("");
+        editNewsBody.setText("");
+        editVideoLink.setText("");
     }
 }

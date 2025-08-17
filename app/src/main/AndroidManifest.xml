@@ -13,6 +13,21 @@
         android:theme="@style/Theme.SafeHaven"
         tools:targetApi="31">
         <activity
+            android:name=".DisasterLandslides"
+            android:exported="false" />
+        <activity
+            android:name=".DisasterFloods"
+            android:exported="false" />
+        <activity
+            android:name=".GuideLandslide"
+            android:exported="false" />
+        <activity
+            android:name=".GuideFloods"
+            android:exported="false" />
+        <activity
+            android:name=".ViewNewsArticles"
+            android:exported="false" />
+        <activity
             android:name=".AllNewsArticles"
             android:exported="false" />
         <activity

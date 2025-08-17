@@ -2,7 +2,9 @@ package com.example.safehaven;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
 
-    private Button contactsButton;
+    private Button contactsButton, moreNewsButton;
     private ImageView settingsButton;
     private LinearLayout survivalguides;
     private LinearLayout disasterTypes;
@@ -85,6 +87,7 @@ public class Home extends AppCompatActivity {
         disasterTypes = findViewById(R.id.disasterTypes);
         postDisasterButton = findViewById(R.id.postDisasterButton);
         locationsButton = findViewById(R.id.locationsButton);
+        moreNewsButton = findViewById(R.id.moreNewsButton);
 
         // Go to Contacts Page
         contactsButton.setOnClickListener(v -> {
@@ -121,5 +124,15 @@ public class Home extends AppCompatActivity {
             Intent intent = new Intent(Home.this, Locations.class);
             startActivity(intent);
         });
+
+        // Go to News Page
+        moreNewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, ViewNewsArticles.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

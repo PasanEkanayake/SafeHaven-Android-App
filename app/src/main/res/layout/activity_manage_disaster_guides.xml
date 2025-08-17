@@ -14,20 +14,26 @@
         android:padding="10dp"
         android:layout_marginTop="15dp">
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_back_arrow"
-            android:layout_alignParentStart="true"
-            android:contentDescription="Back"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_logo_2"
-            android:contentDescription="@string/app_name" />
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_back_arrow"
+                android:contentDescription="Back"/>
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_logo_2"
+                android:contentDescription="@string/app_name" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/settings"
@@ -82,31 +88,28 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Image Upload -->
-            <Button
-                android:id="@+id/btnUploadImage"
+            <!-- Image URL -->
+            <EditText
+                android:id="@+id/imageUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload Image"/>
-            <TextView
-                android:id="@+id/tvImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No image selected"
-                android:paddingBottom="12dp"/>
+                android:hint="Enter Image Link"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:drawable/edit_text"
+                android:inputType="textCapSentences"/>
 
-            <!-- PDF Upload -->
-            <Button
-                android:id="@+id/btnUploadPdf"
+            <!-- Disaster Description -->
+            <EditText
+                android:id="@+id/editNewsBody"
+                android:hint="Enter Disaster Description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Upload PDF"/>
-            <TextView
-                android:id="@+id/tvPdf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No file selected"
-                android:paddingBottom="12dp"/>
+                android:layout_height="150dp"
+                android:gravity="top"
+                android:background="@android:color/white"
+                android:padding="10dp"
+                android:layout_marginBottom="16dp"
+                android:inputType="textMultiLine"/>
 
             <!-- Save/Update Button -->
             <Button
@@ -118,15 +121,6 @@
                 android:background="@drawable/rounded_button"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back to Admin Panel"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/rounded_button"
-            android:textColor="@android:color/white"/>
     </LinearLayout>
 
     <!-- Bottom Navigation -->

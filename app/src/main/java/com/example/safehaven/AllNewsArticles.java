@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,15 +23,27 @@ import java.util.List;
 
 public class AllNewsArticles extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerNews;
     private NewsAdapter adapter;
+    private ImageView btnBack;
     private List<News> newsList;
-    private DatabaseReference databaseRef;
+    private List<String> keys;
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_news_articles);
+
+        btnBack = findViewById(R.id.btnBack);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AllNewsArticles.this, AdminPanel.class);
+                startActivity(intent);
+            }
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -67,24 +81,30 @@ public class AllNewsArticles extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        recyclerView = findViewById(R.id.recyclerViewNews);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerNews = findViewById(R.id.recyclerNews);
+        recyclerNews.setLayoutManager(new LinearLayoutManager(this));
 
         newsList = new ArrayList<>();
-        adapter = new NewsAdapter(this, newsList);
-        recyclerView.setAdapter(adapter);
+        keys = new ArrayList<>();
+        adapter = new NewsAdapter(this, newsList, keys);
+        recyclerNews.setAdapter(adapter);
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("LatestNews");
+        dbRef = FirebaseDatabase.getInstance().getReference("LatestNews");
 
-        databaseRef.addValueEventListener(new ValueEventListener() {
+        loadNews();
+    }
+
+    private void loadNews() {
+        dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 newsList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    News news = ds.getValue(News.class);
+                keys.clear();
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    News news = child.getValue(News.class);
                     if (news != null) {
-                        news.setId(ds.getKey());
                         newsList.add(news);
+                        keys.add(child.getKey());
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -92,7 +112,7 @@ public class AllNewsArticles extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AllNewsArticles.this, "Failed to load news", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AllNewsArticles.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

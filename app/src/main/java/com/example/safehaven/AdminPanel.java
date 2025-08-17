@@ -1,6 +1,8 @@
 package com.example.safehaven;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AdminPanel extends AppCompatActivity {
 
-    private Button btnManageSurvival, btnManageDisaster, btnManageNews, logoutButton;
+    private Button btnManageSurvival, btnManageDisaster, btnManageNews, logoutButton, btnUpdateNews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,7 @@ public class AdminPanel extends AppCompatActivity {
         btnManageDisaster = findViewById(R.id.btnManageDisaster);
         btnManageNews = findViewById(R.id.btnManageNews);
         logoutButton = findViewById(R.id.logoutButton);
+        btnUpdateNews = findViewById(R.id.btnUpdateNews);
 
         // Button click listeners
         btnManageSurvival.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +96,29 @@ public class AdminPanel extends AppCompatActivity {
                 Intent intent = new Intent(AdminPanel.this, ManageLatestNews.class);
                 startActivity(intent);
             }
+        });
+
+        btnUpdateNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AdminPanel.this, AllNewsArticles.class);
+                startActivity(intent);
+            }
+        });
+
+        logoutButton = findViewById(R.id.logoutButton);
+
+        logoutButton.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("SafeHavenPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.apply();
+
+            // Redirect to Home
+            Intent intent = new Intent(AdminPanel.this, SelectLanguage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
 
     }

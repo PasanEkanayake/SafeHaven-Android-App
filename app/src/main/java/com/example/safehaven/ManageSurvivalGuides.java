@@ -3,10 +3,13 @@ package com.example.safehaven;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,25 +26,33 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ManageSurvivalGuides extends AppCompatActivity {
 
     private Spinner spinnerDisasterType;
-    private Button btnUploadBefore, btnUploadAfter, btnSaveGuide, btnBack;
-    private TextView tvBeforePdf, tvAfterPdf;
-    private EditText etYoutubeLink;
-
-    private Uri beforePdfUri, afterPdfUri;
-
+    private EditText beforeGuide, duringGuide, etYoutubeLink;
+    private Button btnSaveGuide;
+    private ImageView btnBack;
     private DatabaseReference databaseRef;
-    private StorageReference storageRef;
 
-    private final int PICK_BEFORE_PDF = 101;
-    private final int PICK_AFTER_PDF = 102;
+    private String selectedDisaster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_survival_guides);
+
+        btnBack = findViewById(R.id.btnBack);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ManageSurvivalGuides.this, AdminPanel.class);
+                startActivity(intent);
+            }
+        });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -79,145 +90,57 @@ public class ManageSurvivalGuides extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
+        // Initialize Views
         spinnerDisasterType = findViewById(R.id.spinnerDisasterType);
-        btnUploadBefore = findViewById(R.id.btnUploadBefore);
-        btnUploadAfter = findViewById(R.id.btnUploadAfter);
-        btnSaveGuide = findViewById(R.id.btnSaveGuide);
-        tvBeforePdf = findViewById(R.id.tvBeforePdf);
-        tvAfterPdf = findViewById(R.id.tvAfterPdf);
+        beforeGuide = findViewById(R.id.beforeGuide);
+        duringGuide = findViewById(R.id.duringGuide);
         etYoutubeLink = findViewById(R.id.etYoutubeLink);
+        btnSaveGuide = findViewById(R.id.btnSaveGuide);
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("SurvivalGuide");
-        storageRef = FirebaseStorage.getInstance().getReference("SurvivalGuide");
+        // Firebase Reference
+        databaseRef = FirebaseDatabase.getInstance().getReference("SurvivalGuides");
 
-        // Disaster types
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
-                new String[]{"Floods", "Landslides"});
+        // Setup Spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                new String[]{"Floods", "Landslides"}
+        );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerDisasterType.setAdapter(adapter);
 
-        // Load guide when type changes
-        spinnerDisasterType.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+        // On selecting disaster type
+        spinnerDisasterType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                loadGuideFromFirebase(spinnerDisasterType.getSelectedItem().toString().toLowerCase());
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedDisaster = parent.getItemAtPosition(position).toString();
+                loadGuideData(selectedDisaster);
             }
 
             @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        btnUploadBefore.setOnClickListener(v -> pickPdf(PICK_BEFORE_PDF));
-        btnUploadAfter.setOnClickListener(v -> pickPdf(PICK_AFTER_PDF));
-        btnSaveGuide.setOnClickListener(v -> saveGuide());
+        // Save/Update Button
+        btnSaveGuide.setOnClickListener(v -> saveOrUpdateGuide());
     }
 
-    private void pickPdf(int requestCode) {
-        Intent intent = new Intent();
-        intent.setType("application/pdf");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select PDF"), requestCode);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK && data != null && data.getData() != null){
-            Uri pdfUri = data.getData();
-            if(requestCode == PICK_BEFORE_PDF){
-                beforePdfUri = pdfUri;
-                tvBeforePdf.setText("Selected: " + pdfUri.getLastPathSegment());
-            } else if(requestCode == PICK_AFTER_PDF){
-                afterPdfUri = pdfUri;
-                tvAfterPdf.setText("Selected: " + pdfUri.getLastPathSegment());
-            }
-        }
-    }
-
-    private void saveGuide() {
-        String youtubeLink = etYoutubeLink.getText().toString().trim();
-        String type = spinnerDisasterType.getSelectedItem().toString().toLowerCase();
-
-        if(beforePdfUri == null && afterPdfUri == null && youtubeLink.isEmpty()){
-            Toast.makeText(this, "Add at least one field", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        uploadFilesAndSave(type, beforePdfUri, afterPdfUri, youtubeLink);
-    }
-
-    private void uploadFilesAndSave(String type, Uri beforeUri, Uri afterUri, String youtubeLink) {
-        final String[] beforeUrlHolder = {null};
-        final String[] afterUrlHolder = {null};
-
-        if(beforeUri != null){
-            StorageReference beforeRef = storageRef.child(type + "/before.pdf");
-            beforeRef.putFile(beforeUri).addOnSuccessListener(taskSnapshot ->
-                    beforeRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        beforeUrlHolder[0] = uri.toString();
-                        saveToFirebase(type, beforeUrlHolder[0], afterUrlHolder[0], youtubeLink);
-                    })
-            );
-        }
-
-        if(afterUri != null){
-            StorageReference afterRef = storageRef.child(type + "/after.pdf");
-            afterRef.putFile(afterUri).addOnSuccessListener(taskSnapshot ->
-                    afterRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                        afterUrlHolder[0] = uri.toString();
-                        saveToFirebase(type, beforeUrlHolder[0], afterUrlHolder[0], youtubeLink);
-                    })
-            );
-        }
-
-        if(beforeUri == null && afterUri == null){
-            saveToFirebase(type, null, null, youtubeLink);
-        }
-    }
-
-    private void saveToFirebase(String type, String beforeUrl, String afterUrl, String youtubeLink){
-        DatabaseReference typeRef = databaseRef.child(type);
-
-        typeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void loadGuideData(String disasterType) {
+        databaseRef.child(disasterType).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String finalBefore = beforeUrl;
-                String finalAfter = afterUrl;
-                String finalYoutube = youtubeLink;
+                if (snapshot.exists()) {
+                    String before = snapshot.child("before").getValue(String.class);
+                    String during = snapshot.child("during").getValue(String.class);
+                    String videoLink = snapshot.child("videoLink").getValue(String.class);
 
-                if(snapshot.exists()){
-                    SurvivalGuide guide = snapshot.getValue(SurvivalGuide.class);
-                    if(finalBefore == null) finalBefore = guide.beforePdfUrl;
-                    if(finalAfter == null) finalAfter = guide.afterPdfUrl;
-                    if(finalYoutube.isEmpty()) finalYoutube = guide.youtubeLink;
-                }
-
-                SurvivalGuide updatedGuide = new SurvivalGuide(finalBefore, finalAfter, finalYoutube);
-                typeRef.setValue(updatedGuide)
-                        .addOnSuccessListener(aVoid -> Toast.makeText(ManageSurvivalGuides.this, "Guide saved!", Toast.LENGTH_SHORT).show())
-                        .addOnFailureListener(e -> Toast.makeText(ManageSurvivalGuides.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ManageSurvivalGuides.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void loadGuideFromFirebase(String type){
-        DatabaseReference typeRef = databaseRef.child(type);
-        typeRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    SurvivalGuide guide = snapshot.getValue(SurvivalGuide.class);
-                    tvBeforePdf.setText(guide.beforePdfUrl != null ? "Uploaded: before.pdf" : "No file selected");
-                    tvAfterPdf.setText(guide.afterPdfUrl != null ? "Uploaded: after.pdf" : "No file selected");
-                    etYoutubeLink.setText(guide.youtubeLink != null ? guide.youtubeLink : "");
+                    beforeGuide.setText(before != null ? before : "");
+                    duringGuide.setText(during != null ? during : "");
+                    etYoutubeLink.setText(videoLink != null ? videoLink : "");
                 } else {
-                    tvBeforePdf.setText("No file selected");
-                    tvAfterPdf.setText("No file selected");
+                    // No data, clear fields
+                    beforeGuide.setText("");
+                    duringGuide.setText("");
                     etYoutubeLink.setText("");
                 }
             }
@@ -227,5 +150,29 @@ public class ManageSurvivalGuides extends AppCompatActivity {
                 Toast.makeText(ManageSurvivalGuides.this, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveOrUpdateGuide() {
+        String before = beforeGuide.getText().toString().trim();
+        String during = duringGuide.getText().toString().trim();
+        String videoLink = etYoutubeLink.getText().toString().trim();
+
+        if (TextUtils.isEmpty(selectedDisaster)) {
+            Toast.makeText(this, "Please select a disaster type", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Map<String, Object> guideData = new HashMap<>();
+        guideData.put("before", before);
+        guideData.put("during", during);
+        guideData.put("videoLink", videoLink);
+
+        databaseRef.child(selectedDisaster).setValue(guideData)
+                .addOnSuccessListener(aVoid ->
+                        Toast.makeText(ManageSurvivalGuides.this, "Guide saved/updated!", Toast.LENGTH_SHORT).show()
+                )
+                .addOnFailureListener(e ->
+                        Toast.makeText(ManageSurvivalGuides.this, "Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
     }
 }

@@ -14,12 +14,26 @@
         android:padding="10dp"
         android:layout_marginTop="15dp">
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:src="@drawable/ic_logo_2"
-            android:contentDescription="@string/app_name" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_back_arrow"
+                android:contentDescription="Back"/>
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_logo_2"
+                android:contentDescription="@string/app_name" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/settings"
@@ -56,21 +70,28 @@
             android:gravity="center"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/newsImageView"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:background="@android:color/darker_gray"
-                android:layout_marginBottom="10dp"/>
-
-            <Button
-                android:id="@+id/btnSelectImage"
+            <EditText
+                android:id="@+id/imageUrl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Select Image"
-                android:layout_marginBottom="20dp"/>
+                android:hint="Enter Image Link"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:drawable/edit_text"
+                android:inputType="textCapSentences"/>
 
+            <!-- Title -->
+            <EditText
+                android:id="@+id/editNewsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Article Title"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:drawable/edit_text"
+                android:inputType="textCapSentences"/>
+
+            <!-- Body -->
             <EditText
                 android:id="@+id/editNewsBody"
                 android:hint="Enter News Body"
@@ -79,9 +100,10 @@
                 android:gravity="top"
                 android:background="@android:color/white"
                 android:padding="10dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:inputType="textMultiLine"/>
 
+            <!-- Video link -->
             <EditText
                 android:id="@+id/editVideoLink"
                 android:hint="Optional: Video Link"
@@ -94,7 +116,9 @@
                 android:id="@+id/btnSaveNews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload Article"/>
+                android:text="Upload Article"
+                android:background="@drawable/rounded_button"
+                android:textColor="@android:color/white"/>
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -103,15 +127,6 @@
                 android:visibility="gone"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"/>
-
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Back to Admin Panel"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/rounded_button"
-                android:textColor="@android:color/white"/>
         </LinearLayout>
     </ScrollView>
 

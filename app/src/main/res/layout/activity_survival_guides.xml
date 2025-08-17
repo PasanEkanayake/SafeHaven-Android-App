@@ -69,6 +69,7 @@
 
         <!-- Floods -->
         <LinearLayout
+            android:id="@+id/guideFloods"
             style="@style/GuideButtonStyle"
             android:background="@drawable/rounded_card">
             <ImageView
@@ -83,6 +84,7 @@
 
         <!-- Landslides -->
         <LinearLayout
+            android:id="@+id/guideLandslides"
             style="@style/GuideButtonStyle"
             android:background="@drawable/rounded_card">
             <ImageView

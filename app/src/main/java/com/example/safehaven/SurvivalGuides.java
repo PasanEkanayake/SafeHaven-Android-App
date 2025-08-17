@@ -2,6 +2,9 @@ package com.example.safehaven;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SurvivalGuides extends AppCompatActivity {
 
+    private LinearLayout guideFloods, guideLandslides;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +27,26 @@ public class SurvivalGuides extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        guideFloods = findViewById(R.id.guideFloods);
+
+        guideFloods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SurvivalGuides.this, GuideFloods.class);
+                startActivity(intent);
+            }
+        });
+
+        guideLandslides = findViewById(R.id.guideLandslides);
+
+        guideLandslides.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SurvivalGuides.this, GuideLandslide.class);
+                startActivity(intent);
+            }
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);

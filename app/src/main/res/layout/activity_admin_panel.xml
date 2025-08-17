@@ -88,7 +88,7 @@
                     android:id="@+id/btnUpdateNews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Update News Articles"/>
+                    android:text="View All News Articles"/>
             </LinearLayout>
 
         </LinearLayout>
