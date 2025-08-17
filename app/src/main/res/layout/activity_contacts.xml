@@ -52,13 +52,14 @@
 
         <!-- Contact 1 -->
         <LinearLayout
+            android:id="@+id/contactAmbulance"
             style="@style/EmergencyButtonStyle"
             android:backgroundTint="#2E75B6">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="119"
+                android:text="1990"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />
@@ -66,13 +67,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Police Emergency Hotline"
+                android:text="Ambulance"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
         <!-- Contact 2 -->
         <LinearLayout
+            android:id="@+id/contactFire"
             style="@style/EmergencyButtonStyle"
             android:backgroundTint="#2E75B6">
 
@@ -87,13 +89,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ambulance / Fire and rescue"
+                android:text="Fire and rescue"
                 android:textColor="#FFFFFF"
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
         <!-- Contact 3 -->
         <LinearLayout
+            android:id="@+id/contactDisaster"
             style="@style/EmergencyButtonStyle"
             android:backgroundTint="#2E75B6">
 
@@ -113,15 +116,16 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
-        <!-- Contact 4–6 -->
+        <!-- Contact 4 -->
         <LinearLayout
+            android:id="@+id/contactPolice"
             style="@style/EmergencyButtonStyle"
             android:backgroundTint="#2E75B6">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="911"
+                android:text="119"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp" />

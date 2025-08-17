@@ -1,7 +1,9 @@
 package com.example.safehaven;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,5 +57,22 @@ public class Contacts extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
+        LinearLayout ambulance = findViewById(R.id.contactAmbulance);
+        LinearLayout fire = findViewById(R.id.contactFire);
+        LinearLayout disaster = findViewById(R.id.contactDisaster);
+        LinearLayout police = findViewById(R.id.contactPolice);
+
+        // Set click listeners to dial numbers
+        ambulance.setOnClickListener(v -> dialNumber("1990"));
+        fire.setOnClickListener(v -> dialNumber("110"));
+        disaster.setOnClickListener(v -> dialNumber("+94112136222")); // no spaces
+        police.setOnClickListener(v -> dialNumber("119"));
+
+    }
+
+    private void dialNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        startActivity(intent);
     }
 }

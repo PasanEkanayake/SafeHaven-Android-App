@@ -61,6 +61,7 @@
                 android:layout_height="wrap_content">
 
                 <Button
+                    android:id="@+id/contactsButton"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:text="Emergency Contacts"
@@ -108,6 +109,7 @@
 
                 <!-- Card 2 -->
                 <LinearLayout
+                    android:id="@+id/disasterTypes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -133,6 +135,7 @@
 
                 <!-- Card 3 -->
                 <LinearLayout
+                    android:id="@+id/postDisasterButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -158,6 +161,7 @@
 
                 <!-- Card 4 -->
                 <LinearLayout
+                    android:id="@+id/locationsButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -170,7 +174,7 @@
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/ic_weather" />
+                        android:src="@drawable/ic_location" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

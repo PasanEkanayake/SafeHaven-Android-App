@@ -2,6 +2,9 @@ package com.example.safehaven;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +16,13 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
+
+    private Button contactsButton;
+    private ImageView settingsButton;
+    private LinearLayout survivalguides;
+    private LinearLayout disasterTypes;
+    private LinearLayout postDisasterButton;
+    private LinearLayout locationsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +78,48 @@ public class Home extends AppCompatActivity {
             return false;
         });
 
-        findViewById(R.id.settings).setOnClickListener(v -> {
-            startActivity(new Intent(getApplicationContext(), Settings.class));
-            overridePendingTransition(0, 0);
+        // Initialize buttons
+        contactsButton = findViewById(R.id.contactsButton);
+        settingsButton = findViewById(R.id.settings);
+        survivalguides = findViewById(R.id.survivalguides);
+        disasterTypes = findViewById(R.id.disasterTypes);
+        postDisasterButton = findViewById(R.id.postDisasterButton);
+        locationsButton = findViewById(R.id.locationsButton);
+
+        // Go to Contacts Page
+        contactsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Home.this, Contacts.class);
+            startActivity(intent);
         });
 
+        // Go to Settings Page
+        settingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Home.this, Settings.class);
+            startActivity(intent);
+        });
+
+        // Go to Survival Guides Page
+        survivalguides.setOnClickListener(v -> {
+            Intent intent = new Intent(Home.this, SurvivalGuides.class);
+            startActivity(intent);
+        });
+
+        // Go to Disaster Types Page
+        disasterTypes.setOnClickListener(v -> {
+            Intent intent = new Intent(Home.this, DisasterTypes.class);
+            startActivity(intent);
+        });
+
+        // Go to Recover Page
+        postDisasterButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Home.this, Recover.class);
+            startActivity(intent);
+        });
+
+        // Go to Locations Page
+        locationsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Home.this, Locations.class);
+            startActivity(intent);
+        });
     }
 }
