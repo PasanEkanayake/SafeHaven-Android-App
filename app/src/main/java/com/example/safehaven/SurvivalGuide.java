@@ -5,7 +5,7 @@ public class SurvivalGuide {
     public String afterPdfUrl;
     public String youtubeLink;
 
-    public SurvivalGuide() {} // Needed for Firebase
+    public SurvivalGuide() {}
 
     public SurvivalGuide(String beforePdfUrl, String afterPdfUrl, String youtubeLink) {
         this.beforePdfUrl = beforePdfUrl;
