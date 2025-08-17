@@ -33,7 +33,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings"
+        android:layout_marginTop="20dp"
+        android:text="Admin Panel"
+        android:fontFamily="@font/poppins_bold"
         android:textSize="22sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -46,78 +48,43 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="#FFFFFF"
+        android:gravity="center_horizontal"
         android:paddingVertical="8dp">
 
-        <!-- Change Name -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#A3D88C" />
-
         <LinearLayout
-            android:id="@+id/editProfileButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Edit Your Profile"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_forward" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#A3D88C" />
-
-        <!-- Change Language -->
-        <LinearLayout
-            android:id="@+id/changeLanguageButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Change Preferred Language"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/currentLanguage"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="English"
-                android:textSize="14sp"
-                android:textColor="#555"/>
+                android:orientation="vertical"
+                android:gravity="center">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_forward" />
+                <Button
+                    android:id="@+id/btnManageSurvival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Survival Guides"
+                    android:layout_marginBottom="12dp"/>
+
+                <Button
+                    android:id="@+id/btnManageDisaster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Disaster Guides"
+                    android:layout_marginBottom="12dp"/>
+
+                <Button
+                    android:id="@+id/btnManageNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Latest News"/>
+            </LinearLayout>
+
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#A3D88C" />
-
-        <!-- Add other settings items here -->
     </LinearLayout>
 
     <Button

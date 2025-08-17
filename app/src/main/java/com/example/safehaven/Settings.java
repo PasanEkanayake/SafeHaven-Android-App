@@ -127,5 +127,13 @@ public class Settings extends AppCompatActivity {
                     .show();
         });
 
+        SharedPreferences sharedPreferences = getSharedPreferences("SafeHavenPrefs", Context.MODE_PRIVATE);
+        boolean isAdmin = sharedPreferences.getBoolean("isAdmin", false);
+
+        if (isAdmin) {
+            // Show admin buttons
+            findViewById(R.id.adminPanelButton).setVisibility(View.VISIBLE);
+        }
+
     }
 }

@@ -50,8 +50,9 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="25dp"
                 android:text="Welcome to SafeHaven!"
+                android:fontFamily="@font/poppins_bold"
                 android:textStyle="bold"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:paddingStart="16dp"
                 android:textColor="#000"/>
 
@@ -184,54 +185,6 @@
                         android:gravity="center"
                         android:paddingTop="10dp"/>
                 </LinearLayout>
-            </GridLayout>
-
-            <!-- Be Ready Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📘 Be Ready for Anything"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingStart="16dp"
-                android:textColor="#000"/>
-
-            <!-- Image Cards -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingVertical="8dp">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="160dp"
-                        android:layout_height="100dp"
-                        android:layout_margin="8dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/flood_img_1"
-                        android:contentDescription="@null"
-                        android:importantForAccessibility="no"/>
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- Read More Button -->
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text="Read more guides"
-                    android:textColor="#fff"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:background="@drawable/rounded_button"
-                    android:layout_margin="16dp" />
             </GridLayout>
 
             <!-- Latest News Section -->

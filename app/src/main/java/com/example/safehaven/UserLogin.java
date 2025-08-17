@@ -24,7 +24,7 @@ public class UserLogin extends AppCompatActivity {
     private Button loginButton;
     private TextView registerRedirectButton;
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference userRef, adminRef;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -41,8 +41,9 @@ public class UserLogin extends AppCompatActivity {
         // SharedPreferences for session management
         sharedPreferences = getSharedPreferences("SafeHavenPrefs", Context.MODE_PRIVATE);
 
-        // Firebase reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        // Firebase references
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+        adminRef = FirebaseDatabase.getInstance().getReference("adminUsers");
 
         // Redirect to registration page
         registerRedirectButton.setOnClickListener(v -> {
@@ -69,37 +70,75 @@ public class UserLogin extends AppCompatActivity {
                 return;
             }
 
-            // Check credentials in Firebase
-            databaseReference.orderByChild("email").equalTo(email)
+            // First check adminUsers node
+            adminRef.orderByChild("email").equalTo(email)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
                             if (snapshot.exists()) {
-                                boolean found = false;
-                                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                    String dbPhone = userSnapshot.child("phone").getValue(String.class);
+                                boolean foundAdmin = false;
+                                for (DataSnapshot adminSnapshot : snapshot.getChildren()) {
+                                    String dbPhone = adminSnapshot.child("phone").getValue(String.class);
                                     if (phone.equals(dbPhone)) {
-                                        // Successful login
-                                        String userId = userSnapshot.getKey();
+                                        // Admin login
+                                        String adminId = adminSnapshot.getKey();
 
-                                        // Save login state + userId in SharedPreferences
                                         sharedPreferences.edit()
                                                 .putBoolean("isRegistered", true)
-                                                .putString("userId", userId)
+                                                .putBoolean("isAdmin", true) // Flag for admin
+                                                .putString("userId", adminId)
                                                 .apply();
 
-                                        Toast.makeText(UserLogin.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(UserLogin.this, "Admin Login Successful!", Toast.LENGTH_SHORT).show();
                                         startActivity(new Intent(UserLogin.this, Home.class));
                                         finish();
-                                        found = true;
+                                        foundAdmin = true;
                                         break;
                                     }
                                 }
-                                if (!found) {
-                                    Toast.makeText(UserLogin.this, "Incorrect phone number", Toast.LENGTH_SHORT).show();
+                                if (!foundAdmin) {
+                                    Toast.makeText(UserLogin.this, "Incorrect phone number for admin", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
-                                Toast.makeText(UserLogin.this, "No account found with this email", Toast.LENGTH_SHORT).show();
+                                // If not admin, check regular users
+                                userRef.orderByChild("email").equalTo(email)
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    boolean foundUser = false;
+                                                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                                                        String dbPhone = userSnapshot.child("phone").getValue(String.class);
+                                                        if (phone.equals(dbPhone)) {
+                                                            // Regular user login
+                                                            String userId = userSnapshot.getKey();
+
+                                                            sharedPreferences.edit()
+                                                                    .putBoolean("isRegistered", true)
+                                                                    .putBoolean("isAdmin", false) // Not admin
+                                                                    .putString("userId", userId)
+                                                                    .apply();
+
+                                                            Toast.makeText(UserLogin.this, "Login Successful!", Toast.LENGTH_SHORT).show();
+                                                            startActivity(new Intent(UserLogin.this, Home.class));
+                                                            finish();
+                                                            foundUser = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                    if (!foundUser) {
+                                                        Toast.makeText(UserLogin.this, "Incorrect phone number", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } else {
+                                                    Toast.makeText(UserLogin.this, "No account found with this email", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError error) {
+                                                Toast.makeText(UserLogin.this, "Database error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
                             }
                         }
 

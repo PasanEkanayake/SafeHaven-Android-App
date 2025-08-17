@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ACD696"
-    tools:context=".GuidesActivity">
+    android:background="#ACD696">
 
     <!-- Top Bar -->
     <RelativeLayout
@@ -31,6 +30,19 @@
             android:src="@drawable/ic_settings"/>
     </RelativeLayout>
 
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Survival Guides"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="#3784CB"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="16dp" />
+
     <!-- Grid of Buttons -->
     <GridLayout
         android:id="@+id/guidesGrid"
@@ -42,25 +54,23 @@
         android:rowCount="3">
 
         <!-- First Aids -->
-        <LinearLayout
-            style="@style/GuideButtonStyle"
-            android:background="@drawable/rounded_card"
-            android:onClick="onFirstAidClick">
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginBottom="20dp"
-                android:src="@drawable/ic_first_aid" />
-            <TextView
-                style="@style/GuideTextStyle"
-                android:text="First Aids" />
-        </LinearLayout>
+<!--        <LinearLayout-->
+<!--            style="@style/GuideButtonStyle"-->
+<!--            android:background="@drawable/rounded_card">-->
+<!--            <ImageView-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:src="@drawable/ic_first_aid" />-->
+<!--            <TextView-->
+<!--                style="@style/GuideTextStyle"-->
+<!--                android:text="First Aids" />-->
+<!--        </LinearLayout>-->
 
         <!-- Floods -->
         <LinearLayout
             style="@style/GuideButtonStyle"
-            android:background="@drawable/rounded_card"
-            android:onClick="onFloodsClick">
+            android:background="@drawable/rounded_card">
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -74,8 +84,7 @@
         <!-- Landslides -->
         <LinearLayout
             style="@style/GuideButtonStyle"
-            android:background="@drawable/rounded_card"
-            android:onClick="onLandslidesClick">
+            android:background="@drawable/rounded_card">
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -84,6 +93,11 @@
             <TextView
                 style="@style/GuideTextStyle"
                 android:text="Landslides" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/GuideButtonStyle"
+            android:background="@null">
         </LinearLayout>
     </GridLayout>
 
