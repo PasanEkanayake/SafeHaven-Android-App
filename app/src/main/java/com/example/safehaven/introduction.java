@@ -1,6 +1,8 @@
 package com.example.safehaven;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -11,6 +13,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class introduction extends AppCompatActivity {
+
+    private Button finishButton;
+    private Button backButton;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +30,24 @@ public class introduction extends AppCompatActivity {
         });
 
         Button backButton = findViewById(R.id.backButton);
-        Button finishButton = findViewById(R.id.finishButton);
 
         // Back button → go to previous page
-        backButton.setOnClickListener(v -> onBackPressed());
+        backButton.setOnClickListener(v -> {
+            startActivity(new Intent(introduction.this, UserRegister.class));
+            finish();
+        });
 
-        // Finish button → go to HomeActivity
+        sharedPreferences = getSharedPreferences("SafeHavenPrefs", Context.MODE_PRIVATE);
+        finishButton = findViewById(R.id.finishButton);
+
         finishButton.setOnClickListener(v -> {
-            Intent intent = new Intent(introduction.this, Home.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("introFinished", true); // user finished intro
+            editor.apply();
+
+            // Go to Home
+            startActivity(new Intent(introduction.this, Home.class));
+            finish();
         });
 
     }

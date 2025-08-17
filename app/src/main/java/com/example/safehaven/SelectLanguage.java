@@ -30,18 +30,18 @@ public class SelectLanguage extends AppCompatActivity {
 
         View.OnClickListener languageClickListener = v -> {
             String selectedLanguage = "";
-            if (v.getId() == R.id.sinhalaButton) selectedLanguage = "si";
-            else if (v.getId() == R.id.englishButton) selectedLanguage = "en";
-            else if (v.getId() == R.id.tamilButton) selectedLanguage = "ta";
+            if (v.getId() == R.id.sinhalaButton) selectedLanguage = "Sinhala";
+            else if (v.getId() == R.id.englishButton) selectedLanguage = "English";
+            else if (v.getId() == R.id.tamilButton) selectedLanguage = "Tamil";
 
-            // Optional: Save selected language in SharedPreferences
-            getSharedPreferences("AppPrefs", MODE_PRIVATE)
+            // Save selected language in SharedPreferences
+            getSharedPreferences("SafeHavenPrefs", MODE_PRIVATE)
                     .edit()
                     .putString("language", selectedLanguage)
                     .apply();
 
-            // Go to HomePage
-            Intent intent = new Intent(SelectLanguage.this, Home.class);
+            // Go to Next Page
+            Intent intent = new Intent(SelectLanguage.this, UserRegister.class);
             startActivity(intent);
             finish(); // close language selection so user can't go back
         };

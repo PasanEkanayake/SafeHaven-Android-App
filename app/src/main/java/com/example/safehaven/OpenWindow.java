@@ -1,6 +1,8 @@
 package com.example.safehaven;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -13,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class OpenWindow extends AppCompatActivity {
 
     private static final long SPLASH_DELAY = 3000;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,13 +28,21 @@ public class OpenWindow extends AppCompatActivity {
             return insets;
         });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(OpenWindow.this, SelectLanguage.class);
-                startActivity(intent);
-                finish(); // close this activity so user can't go back
+        sharedPreferences = getSharedPreferences("SafeHavenPrefs", Context.MODE_PRIVATE);
+        boolean isRegistered = sharedPreferences.getBoolean("isRegistered", false);
+        boolean introFinished = sharedPreferences.getBoolean("introFinished", false);
+
+        new Handler().postDelayed(() -> {
+            Intent intent;
+            if (isRegistered && introFinished) {
+                // User already completed intro → go straight to Home
+                intent = new Intent(OpenWindow.this, Home.class);
+            } else {
+                // User not registered or intro not finished → go to SelectLanguage
+                intent = new Intent(OpenWindow.this, SelectLanguage.class);
             }
+            startActivity(intent);
+            finish(); // close splash screen
         }, SPLASH_DELAY);
     }
 }

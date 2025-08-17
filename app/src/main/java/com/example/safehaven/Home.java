@@ -25,16 +25,16 @@ public class Home extends AppCompatActivity {
             return insets;
         });
 
-        String language = getSharedPreferences("AppPrefs", MODE_PRIVATE)
-                .getString("language", "en");
+        String language = getSharedPreferences("SafeHavenPrefs", MODE_PRIVATE)
+                .getString("language", "English");
 
         TextView welcomeMessage = findViewById(R.id.welcomeMessage);
 
         switch (language) {
-            case "si":
+            case "Sinhala":
                 welcomeMessage.setText("SafeHaven වෙත සාදරයෙන් පිළිගනිමු!");
                 break;
-            case "ta":
+            case "Tamil":
                 welcomeMessage.setText("SafeHaven-க்கு வரவேற்கிறோம்!");
                 break;
             default:

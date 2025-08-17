@@ -52,7 +52,6 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"/>
 
-            <!-- 1st row: Image left, Text right -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,13 +70,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
-                    android:text="First description here about disaster preparedness."
+                    android:text="Learn how to prepare and face disasters with expert-approved tips and guidelines."
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="#000000"/>
             </LinearLayout>
 
-            <!-- 2nd row: Text left, Image right -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="16dp"
-                    android:text="Second description here, text goes to the left."
+                    android:text="Find information and resource to help with the rebuilding after a disaster."
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="#000000"/>
@@ -102,7 +100,6 @@
                     android:contentDescription="Intro 2"/>
             </LinearLayout>
 
-            <!-- 3rd row: Image left, Text right -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -121,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="16dp"
-                    android:text="Third description here, aligned to the right of image."
+                    android:text="Emergency contacts list to report any and all disaster related incidents."
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins_regular"
                     android:textColor="#000000"/>

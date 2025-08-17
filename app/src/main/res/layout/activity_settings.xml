@@ -49,13 +49,14 @@
         android:background="#FFFFFF"
         android:paddingVertical="8dp">
 
-        <!-- Item template -->
+        <!-- Change Name -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#A3D88C" />
 
         <LinearLayout
+            android:id="@+id/editProfileButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -66,7 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Change your name"
+                android:text="Edit Your Profile"
                 android:textSize="16sp" />
 
             <ImageView
@@ -80,9 +81,9 @@
             android:layout_height="1dp"
             android:background="#A3D88C" />
 
-        <!-- Repeat the above block for each item -->
-        <!-- Change your location -->
+        <!-- Change Language -->
         <LinearLayout
+            android:id="@+id/changeLanguageButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -93,8 +94,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Change your location"
+                android:text="Change Preferred Language"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/currentLanguage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:text="English"
+                android:textSize="14sp"
+                android:textColor="#555"/>
 
             <ImageView
                 android:layout_width="24dp"
@@ -107,10 +117,19 @@
             android:layout_height="1dp"
             android:background="#A3D88C" />
 
-        <!-- Add similar blocks for Languages, Notifications, Privacy Policy, About -->
-        <!-- ... -->
-
+        <!-- Add other settings items here -->
     </LinearLayout>
+
+    <!-- Logout Button -->
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:textColor="@android:color/white"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@null"
+        android:layout_margin="12dp"/>
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
