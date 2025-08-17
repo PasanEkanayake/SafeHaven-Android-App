@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +26,7 @@ import com.google.firebase.storage.StorageReference;
 public class ManageSurvivalGuides extends AppCompatActivity {
 
     private Spinner spinnerDisasterType;
-    private Button btnUploadBefore, btnUploadAfter, btnSaveGuide;
+    private Button btnUploadBefore, btnUploadAfter, btnSaveGuide, btnBack;
     private TextView tvBeforePdf, tvAfterPdf;
     private EditText etYoutubeLink;
 
@@ -41,6 +42,42 @@ public class ManageSurvivalGuides extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_survival_guides);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.getMenu().setGroupCheckable(0, true, false);
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            bottomNavigationView.getMenu().getItem(i).setChecked(false);
+        }
+        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
+
+        // Navigation handling
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_guides) {
+                startActivity(new Intent(getApplicationContext(), SurvivalGuides.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(getApplicationContext(), Home.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_recover) {
+                startActivity(new Intent(getApplicationContext(), Recover.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_contacts) {
+                startActivity(new Intent(getApplicationContext(), Contacts.class));
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            return false;
+        });
+
+        findViewById(R.id.settings).setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), Settings.class));
+            overridePendingTransition(0, 0);
+        });
 
         spinnerDisasterType = findViewById(R.id.spinnerDisasterType);
         btnUploadBefore = findViewById(R.id.btnUploadBefore);

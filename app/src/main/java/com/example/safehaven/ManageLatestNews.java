@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,7 +31,7 @@ public class ManageLatestNews extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageView newsImageView;
-    private Button btnSelectImage, btnSaveNews;
+    private Button btnSelectImage, btnSaveNews, btnBack;
     private EditText editNewsBody, editVideoLink;
     private ProgressBar progressBar;
 
@@ -42,6 +43,42 @@ public class ManageLatestNews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_latest_news);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.getMenu().setGroupCheckable(0, true, false);
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            bottomNavigationView.getMenu().getItem(i).setChecked(false);
+        }
+        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
+
+        // Navigation handling
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_guides) {
+                startActivity(new Intent(getApplicationContext(), SurvivalGuides.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(getApplicationContext(), Home.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_recover) {
+                startActivity(new Intent(getApplicationContext(), Recover.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_contacts) {
+                startActivity(new Intent(getApplicationContext(), Contacts.class));
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            return false;
+        });
+
+        findViewById(R.id.settings).setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), Settings.class));
+            overridePendingTransition(0, 0);
+        });
 
         newsImageView = findViewById(R.id.newsImageView);
         btnSelectImage = findViewById(R.id.btnSelectImage);

@@ -81,7 +81,14 @@
                     android:id="@+id/btnManageNews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Manage Latest News"/>
+                    android:text="Add Latest News"
+                    android:layout_marginBottom="12dp"/>
+
+                <Button
+                    android:id="@+id/btnUpdateNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Update News Articles"/>
             </LinearLayout>
 
         </LinearLayout>

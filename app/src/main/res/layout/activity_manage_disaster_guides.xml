@@ -15,6 +15,14 @@
         android:layout_marginTop="15dp">
 
         <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_back_arrow"
+            android:layout_alignParentStart="true"
+            android:contentDescription="Back"/>
+
+        <ImageView
             android:id="@+id/logo"
             android:layout_width="150dp"
             android:layout_height="50dp"
@@ -110,6 +118,15 @@
                 android:background="@drawable/rounded_button"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back to Admin Panel"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_button"
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 
     <!-- Bottom Navigation -->

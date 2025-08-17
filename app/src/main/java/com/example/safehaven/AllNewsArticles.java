@@ -1,32 +1,35 @@
 package com.example.safehaven;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-public class AdminPanel extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    private Button btnManageSurvival, btnManageDisaster, btnManageNews, logoutButton;
+public class AllNewsArticles extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private NewsAdapter adapter;
+    private List<News> newsList;
+    private DatabaseReference databaseRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_admin_panel);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        setContentView(R.layout.activity_all_news_articles);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -64,36 +67,33 @@ public class AdminPanel extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        // Initialize buttons
-        btnManageSurvival = findViewById(R.id.btnManageSurvival);
-        btnManageDisaster = findViewById(R.id.btnManageDisaster);
-        btnManageNews = findViewById(R.id.btnManageNews);
-        logoutButton = findViewById(R.id.logoutButton);
+        recyclerView = findViewById(R.id.recyclerViewNews);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Button click listeners
-        btnManageSurvival.setOnClickListener(new View.OnClickListener() {
+        newsList = new ArrayList<>();
+        adapter = new NewsAdapter(this, newsList);
+        recyclerView.setAdapter(adapter);
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("LatestNews");
+
+        databaseRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AdminPanel.this, ManageSurvivalGuides.class);
-                startActivity(intent);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                newsList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    News news = ds.getValue(News.class);
+                    if (news != null) {
+                        news.setId(ds.getKey());
+                        newsList.add(news);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AllNewsArticles.this, "Failed to load news", Toast.LENGTH_SHORT).show();
             }
         });
-
-        btnManageDisaster.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AdminPanel.this, ManageDisasterGuides.class);
-                startActivity(intent);
-            }
-        });
-
-        btnManageNews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(AdminPanel.this, ManageLatestNews.class);
-                startActivity(intent);
-            }
-        });
-
     }
 }

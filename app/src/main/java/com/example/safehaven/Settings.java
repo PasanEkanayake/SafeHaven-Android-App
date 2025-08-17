@@ -20,7 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Settings extends AppCompatActivity {
 
-    private Button logoutButton;
+    private Button logoutButton, adminPanelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +135,17 @@ public class Settings extends AppCompatActivity {
             // Show admin buttons
             findViewById(R.id.adminPanelButton).setVisibility(View.VISIBLE);
         }
+
+        adminPanelButton = findViewById(R.id.adminPanelButton);
+
+        // Button click listeners
+        adminPanelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Settings.this, AdminPanel.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }

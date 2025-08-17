@@ -31,13 +31,17 @@ public class OpenWindow extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("SafeHavenPrefs", Context.MODE_PRIVATE);
         boolean isRegistered = sharedPreferences.getBoolean("isRegistered", false);
         boolean introFinished = sharedPreferences.getBoolean("introFinished", false);
+        boolean isAdminLogged = sharedPreferences.getBoolean("isAdmin", false);
 
         new Handler().postDelayed(() -> {
             Intent intent;
             if (isRegistered && introFinished) {
                 // User already completed intro → go straight to Home
                 intent = new Intent(OpenWindow.this, Home.class);
-            } else {
+            }
+            else if(isAdminLogged) {
+                intent = new Intent(OpenWindow.this, Home.class);
+            }else {
                 // User not registered or intro not finished → go to SelectLanguage
                 intent = new Intent(OpenWindow.this, SelectLanguage.class);
             }
