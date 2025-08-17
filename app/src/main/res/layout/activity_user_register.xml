@@ -9,8 +9,7 @@
     <!-- Main Scrollable Content -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/bottomNav">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,52 +22,27 @@
                 android:id="@+id/logoImageView"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
+                android:layout_marginBottom="35dp"
                 android:src="@drawable/ic_logo_3"
                 android:layout_marginTop="40dp"
                 android:contentDescription="App Logo"/>
 
-            <!-- Welcome Text -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/welcomeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Welcome to "
-                    android:textSize="24sp"
-                    android:textColor="#000000"/>
-
-                <TextView
-                    android:id="@+id/appNameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="SafeHaven"
-                    android:textSize="24sp"
-                    android:textColor="#0077CC"
-                    android:textStyle="bold"/>
-            </LinearLayout>
-
-            <!-- Language Selection -->
-            <TextView
-                android:id="@+id/instructionText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select your preferred language"
-                android:textSize="16sp"
-                android:textColor="#000000"
-                android:layout_marginTop="20dp"/>
-
             <!-- Small description about Registration & Privacy -->
             <TextView
-                android:id="@+id/privacyInfo"
+                android:id="@+id/privacyInfo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="You may register to receive personalized updates and alerts. Your data is used only to improve safety and will not be shared without your consent."
+                android:textSize="14sp"
+                android:textColor="#000000"
+                android:layout_marginTop="20dp"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/privacyInfo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(Registration is optional and you can register later in the app settings as well.)"
                 android:textSize="14sp"
                 android:textColor="#000000"
                 android:layout_marginTop="20dp"
@@ -104,7 +78,7 @@
                     android:id="@+id/phoneInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Phone Number"
+                    android:hint="Telephone (ex: 0712345678)"
                     android:inputType="phone"
                     android:layout_marginTop="8dp"
                     android:padding="10dp"/>
@@ -132,6 +106,7 @@
             android:layout_height="wrap_content"
             android:text="Back"
             android:background="@drawable/rounded_button"
+            android:backgroundTint="@null"
             android:textColor="@android:color/white"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
