@@ -50,20 +50,6 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         News news = newsList.get(position);
         String key = keys.get(position);
 
-        holder.newsTitle.setText(news.getTitle());
-
-        // Truncate the news body (first 100 characters only)
-        String body = news.getNewsBody();
-        if (body != null && body.length() > 100) {
-            holder.newsBody.setText(body.substring(0, 100) + "...");
-        } else {
-            holder.newsBody.setText(body);
-        }
-
-        holder.newsVideoLink.setText(news.getVideoLink());
-
-        // Load image with Glide
-        Glide.with(context).load(news.getImageUrl()).into(holder.newsImage);
 
         holder.btnDelete.setOnClickListener(v -> {
             dbRef.child(key).removeValue()

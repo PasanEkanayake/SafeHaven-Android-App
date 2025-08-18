@@ -1,29 +1,35 @@
 package com.example.safehaven;
 
 public class News {
-    private String title;
-    private String newsBody;
-    private String imageUrl;
-    private String videoLink;
+    // Field names must match the keys in Firebase: title, imageUrl, newsBody, newsBodyUrl, videoLink
+    public String title;
+    public String imageUrl;
+    public String newsBody;
+    public String newsBodyUrl;
+    public String videoLink;
 
-    public News() {
-        // required empty constructor for Firebase
-    }
+    public News() { }
 
-    public News(String title, String newsBody, String imageUrl, String videoLink) {
+    public News(String title, String imageUrl, String newsBody, String newsBodyUrl, String videoLink) {
         this.title = title;
-        this.newsBody = newsBody;
         this.imageUrl = imageUrl;
+        this.newsBody = newsBody;
+        this.newsBodyUrl = newsBodyUrl;
         this.videoLink = videoLink;
     }
 
-    public String getTitle() { return title; }
-    public String getNewsBody() { return newsBody; }
-    public String getImageUrl() { return imageUrl; }
-    public String getVideoLink() { return videoLink; }
+    public String getNewsTitle() { return title; }
+    public void setNewsTitle(String title) { this.title = title; }
 
-    public void setTitle(String title) { this.title = title; }
+    public String getNewsImage() { return imageUrl; }
+    public void setNewsImage(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getNewsBody() { return newsBody; }
     public void setNewsBody(String newsBody) { this.newsBody = newsBody; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-    public void setVideoLink(String videoLink) { this.videoLink = videoLink; }
+
+    public String getNewsBodyImage() { return newsBodyUrl; }
+    public void setNewsBodyImage(String newsBodyUrl) { this.newsBodyUrl = newsBodyUrl; }
+
+    public String getNewsVideoLink() { return videoLink; }
+    public void setNewsVideoLink(String videoLink) { this.videoLink = videoLink; }
 }

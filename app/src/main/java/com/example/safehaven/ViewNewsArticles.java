@@ -2,6 +2,7 @@ package com.example.safehaven;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -35,12 +36,10 @@ public class ViewNewsArticles extends AppCompatActivity {
 
         btnBack = findViewById(R.id.btnBack);
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ViewNewsArticles.this, Home.class);
-                startActivity(intent);
-            }
+        btnBack.setOnClickListener(view -> {
+            Intent intent = new Intent(ViewNewsArticles.this, Home.class);
+            startActivity(intent);
+            finish();
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -81,7 +80,6 @@ public class ViewNewsArticles extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.newsRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         newsList = new ArrayList<>();
         adapter = new NewsViewAdapter(this, newsList);
         recyclerView.setAdapter(adapter);
@@ -96,13 +94,19 @@ public class ViewNewsArticles extends AppCompatActivity {
                     News news = data.getValue(News.class);
                     if (news != null) {
                         newsList.add(news);
+                        Log.d("ViewNewsArticles", "loaded news: " + news.getNewsTitle() + " img=" + news.getNewsImage());
+                    } else {
+                        Log.w("ViewNewsArticles", "news is null at key=" + data.getKey());
                     }
                 }
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ViewNewsArticles", "db error: " + error.getMessage());
+            }
         });
+
     }
 }

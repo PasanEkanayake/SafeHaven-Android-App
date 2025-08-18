@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -21,7 +20,7 @@ import java.util.Map;
 
 public class ManageLatestNews extends AppCompatActivity {
 
-    private EditText editImageUrl, editNewsTitle, editNewsBody, editVideoLink;
+    private EditText editImageUrl, editNewsTitle, editNewsBody, editVideoLink, editNewsBodyUrl;
     private Button btnSaveNews;
     private ImageView btnBack;
     private ProgressBar progressBar;
@@ -34,24 +33,18 @@ public class ManageLatestNews extends AppCompatActivity {
         setContentView(R.layout.activity_manage_latest_news);
 
         btnBack = findViewById(R.id.btnBack);
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ManageLatestNews.this, AdminPanel.class);
-                startActivity(intent);
-            }
+        btnBack.setOnClickListener(view -> {
+            Intent intent = new Intent(ManageLatestNews.this, AdminPanel.class);
+            startActivity(intent);
         });
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
         bottomNavigationView.getMenu().setGroupCheckable(0, true, false);
         for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
             bottomNavigationView.getMenu().getItem(i).setChecked(false);
         }
         bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
 
-        // Navigation handling
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_guides) {
@@ -83,25 +76,22 @@ public class ManageLatestNews extends AppCompatActivity {
         editImageUrl = findViewById(R.id.imageUrl);
         editNewsTitle = findViewById(R.id.editNewsTitle);
         editNewsBody = findViewById(R.id.editNewsBody);
+        editNewsBodyUrl = findViewById(R.id.newsBodyUrl);  // ✅ Added
         editVideoLink = findViewById(R.id.editVideoLink);
         btnSaveNews = findViewById(R.id.btnSaveNews);
         progressBar = findViewById(R.id.progressBar);
 
-        // Initialize Firebase Database reference
+        // Firebase reference
         databaseReference = FirebaseDatabase.getInstance().getReference("LatestNews");
 
-        btnSaveNews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uploadNews();
-            }
-        });
+        btnSaveNews.setOnClickListener(v -> uploadNews());
     }
 
     private void uploadNews() {
         String imageUrl = editImageUrl.getText().toString().trim();
         String title = editNewsTitle.getText().toString().trim();
         String newsBody = editNewsBody.getText().toString().trim();
+        String newsBodyUrl = editNewsBodyUrl.getText().toString().trim(); // ✅ Added
         String videoLink = editVideoLink.getText().toString().trim();
 
         if (title.isEmpty() || newsBody.isEmpty() || imageUrl.isEmpty()) {
@@ -112,13 +102,12 @@ public class ManageLatestNews extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         btnSaveNews.setEnabled(false);
 
-        // Generate a unique key for each news item
         String newsId = databaseReference.push().getKey();
 
-        // Create a map for the news item
         Map<String, Object> newsMap = new HashMap<>();
         newsMap.put("title", title);
         newsMap.put("newsBody", newsBody);
+        newsMap.put("newsBodyUrl", newsBodyUrl);
         newsMap.put("videoLink", videoLink);
         newsMap.put("imageUrl", imageUrl);
 
@@ -142,6 +131,7 @@ public class ManageLatestNews extends AppCompatActivity {
         editImageUrl.setText("");
         editNewsTitle.setText("");
         editNewsBody.setText("");
+        editNewsBodyUrl.setText("");
         editVideoLink.setText("");
     }
 }

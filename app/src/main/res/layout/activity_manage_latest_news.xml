@@ -103,6 +103,17 @@
                 android:layout_marginBottom="16dp"
                 android:inputType="textMultiLine"/>
 
+            <!-- Body URL -->
+            <EditText
+                android:id="@+id/newsBodyUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter News Body Link"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@android:drawable/edit_text"
+                android:inputType="textCapSentences"/>
+
             <!-- Video link -->
             <EditText
                 android:id="@+id/editVideoLink"

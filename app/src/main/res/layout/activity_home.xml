@@ -193,32 +193,93 @@
                 android:layout_height="wrap_content"
                 android:text="📰 Latest News"
                 android:textSize="20sp"
+                android:fontFamily="@font/poppins_bold"
                 android:textStyle="bold"
-                android:padding="16dp"
-                android:textColor="#000"/>
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:textColor="#3784CB"/>
 
             <!-- News Cards -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="8dp">
+                android:padding="26dp"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/flood_img_1" />
+                <LinearLayout
+                    android:id="@+id/newsCard1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="#3784CB"
+                    android:layout_marginBottom="15dp"
+                    android:elevation="2dp">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/flood_img_1" />
+                    <ImageView
+                        android:id="@+id/newsImage1"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:scaleType="centerCrop"
+                        android:background="#CCC"/>
+
+                    <TextView
+                        android:id="@+id/newsTitle1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="News Title"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingTop="8dp"
+                        android:textColor="#FFFFFF"/>
+
+                    <TextView
+                        android:id="@+id/newsBody1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Short news preview..."
+                        android:textSize="14sp"
+                        android:paddingTop="4dp"
+                        android:textColor="#FFFFFF"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/newsCard2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:background="#3784CB"
+                    android:layout_marginBottom="10dp"
+                    android:elevation="2dp">
+
+                    <ImageView
+                        android:id="@+id/newsImage2"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:scaleType="centerCrop"
+                        android:background="#CCC"/>
+
+                    <TextView
+                        android:id="@+id/newsTitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="News Title"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:paddingTop="8dp"
+                        android:textColor="#FFFFFF"/>
+
+                    <TextView
+                        android:id="@+id/newsBody2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Short news preview..."
+                        android:textSize="14sp"
+                        android:paddingTop="4dp"
+                        android:textColor="#FFFFFF"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <!-- More News Articles -->
@@ -235,7 +296,8 @@
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:background="@drawable/rounded_button"
-                    android:layout_margin="16dp" />
+                    android:layout_margin="16dp"
+                    android:layout_marginTop="0dp"/>
             </GridLayout>
         </LinearLayout>
     </ScrollView>

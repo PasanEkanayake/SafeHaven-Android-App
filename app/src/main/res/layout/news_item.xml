@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="180dp"
         android:scaleType="centerCrop"
+        android:layout_marginBottom="12dp"
         android:background="#CCC"/>
 
     <TextView
@@ -22,25 +23,14 @@
         android:text="News Title"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:paddingTop="8dp"
-        android:textColor="#000"/>
+        android:textColor="#000" />
 
     <TextView
-        android:id="@+id/newsBody"
+        android:id="@+id/newsSummary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Short news preview..."
+        android:text="Summary goes here..."
         android:textSize="14sp"
-        android:paddingTop="4dp"
+        android:paddingTop="8dp"
         android:textColor="#444"/>
-
-    <TextView
-        android:id="@+id/newsVideoLink"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Video: https://youtube.com/..."
-        android:textSize="13sp"
-        android:textColor="#1A73E8"
-        android:paddingTop="4dp"/>
-
 </LinearLayout>
