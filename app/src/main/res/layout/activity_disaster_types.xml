@@ -69,6 +69,7 @@
 
         <!-- Floods -->
         <LinearLayout
+            android:id="@+id/disasterFloods"
             style="@style/GuideButtonStyle"
             android:background="@drawable/rounded_card">
             <ImageView
