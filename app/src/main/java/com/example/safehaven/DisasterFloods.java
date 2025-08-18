@@ -1,8 +1,10 @@
 package com.example.safehaven;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.safehaven.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,13 +23,59 @@ import com.google.firebase.database.ValueEventListener;
 public class DisasterFloods extends AppCompatActivity {
     private static final String TAG = "FloodDetailActivity";
 
-    private ImageView disasterImage;
+    private ImageView disasterImage, btnBack;
     private TextView disasterDescription;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_disaster_floods);
+
+        btnBack = findViewById(R.id.btnBack);
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DisasterFloods.this, DisasterTypes.class);
+                startActivity(intent);
+            }
+        });
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.getMenu().setGroupCheckable(0, true, false);
+        for (int i = 0; i < bottomNavigationView.getMenu().size(); i++) {
+            bottomNavigationView.getMenu().getItem(i).setChecked(false);
+        }
+        bottomNavigationView.getMenu().setGroupCheckable(0, true, true);
+
+        // Navigation handling
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.nav_guides) {
+                startActivity(new Intent(getApplicationContext(), SurvivalGuides.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(getApplicationContext(), Home.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_recover) {
+                startActivity(new Intent(getApplicationContext(), Recover.class));
+                overridePendingTransition(0, 0);
+                return true;
+            } else if (itemId == R.id.nav_contacts) {
+                startActivity(new Intent(getApplicationContext(), Contacts.class));
+                overridePendingTransition(0, 0);
+                return true;
+            }
+            return false;
+        });
+
+        findViewById(R.id.settings).setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), Settings.class));
+            overridePendingTransition(0, 0);
+        });
 
         disasterImage = findViewById(R.id.disasterImage);
         disasterDescription = findViewById(R.id.disasterDescription);

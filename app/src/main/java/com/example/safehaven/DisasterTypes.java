@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class DisasterTypes extends AppCompatActivity {
 
     private ImageView settingsButton, btnBack;
-    private LinearLayout disasterFloods;
+    private LinearLayout disasterFloods, disasterLandslides;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,16 @@ public class DisasterTypes extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DisasterTypes.this, DisasterFloods.class);
+                startActivity(intent);
+            }
+        });
+
+        disasterLandslides = findViewById(R.id.disasterLandslides);
+
+        disasterLandslides.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DisasterTypes.this, DisasterLandslides.class);
                 startActivity(intent);
             }
         });
