@@ -54,7 +54,7 @@
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:paddingStart="16dp"
-                android:textColor="#000"/>
+                android:textColor="#3784CB"/>
 
             <!-- Emergency Contacts -->
             <GridLayout

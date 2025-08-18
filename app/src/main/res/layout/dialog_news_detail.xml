@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/dialogNewsImage"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:scaleType="centerCrop"
+            android:background="#DDD" />
+
+        <TextView
+            android:id="@+id/dialogNewsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingTop="12dp"
+            android:textColor="#000"/>
+
+        <TextView
+            android:id="@+id/dialogNewsBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Full news body"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:textColor="#333"/>
+
+        <TextView
+            android:id="@+id/dialogNewsVideoLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Watch video"
+            android:textSize="15sp"
+            android:paddingTop="12dp"
+            android:textColor="#1A73E8"
+            android:autoLink="none" />
+
+        <Button
+            android:id="@+id/btnCloseDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Close"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="end" />
+
+    </LinearLayout>
+</ScrollView>
