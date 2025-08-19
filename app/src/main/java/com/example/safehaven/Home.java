@@ -166,8 +166,6 @@ public class Home extends AppCompatActivity {
         return text;
     }
 
-    // Popup for full article
-    // Popup for full article
     private void showNewsPopup(String title, String imageUrl, String videoLink, String newsBodyUrl) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View popupView = LayoutInflater.from(this).inflate(R.layout.news_popup, null);

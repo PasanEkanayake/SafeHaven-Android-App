@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ACD696">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Top Bar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="15dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_back_arrow"
+                    android:contentDescription="Back"/>
+
+                <ImageView
+                    android:id="@+id/logo"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_logo_2"
+                    android:contentDescription="@string/app_name" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/settings"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_settings"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="25dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/detailTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Guide Title"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#3784CB"
+                android:gravity="center"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Main Image -->
+            <ImageView
+                android:id="@+id/detailMainImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="30dp" />
+
+            <!-- Body Image -->
+            <ImageView
+                android:id="@+id/detailBodyImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginBottom="20dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

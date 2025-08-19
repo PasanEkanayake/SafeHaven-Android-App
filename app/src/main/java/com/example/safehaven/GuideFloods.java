@@ -1,17 +1,28 @@
 package com.example.safehaven;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +40,8 @@ import kotlin.jvm.functions.Function0;
 
 public class GuideFloods extends AppCompatActivity {
 
+    private static final String TAG = "GuideFloods";
+
     private DatabaseReference databaseRef;
     private YouTubePlayerView youtubePlayerView;
     private FrameLayout youtubeContainer;
@@ -40,6 +53,9 @@ public class GuideFloods extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide_floods);
 
+        // NOTE: Ensure AndroidManifest.xml contains:
+        // <uses-permission android:name="android.permission.INTERNET"/>
+
         // Initialize views
         btnBack = findViewById(R.id.btnBack);
         youtubeContainer = findViewById(R.id.youtube_container);
@@ -49,25 +65,20 @@ public class GuideFloods extends AppCompatActivity {
         Button btnAfterFlood = findViewById(R.id.btnAfterFlood);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        // Back button
-        btnBack = findViewById(R.id.btnBack);
-
-        btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(GuideFloods.this, SurvivalGuides.class);
-                startActivity(intent);
-            }
+        // Back button action
+        btnBack.setOnClickListener(view -> {
+            Intent intent = new Intent(GuideFloods.this, SurvivalGuides.class);
+            startActivity(intent);
         });
 
         // Firebase reference
         databaseRef = FirebaseDatabase.getInstance().getReference("SurvivalGuides").child("Floods");
 
+        // YouTube player setup
         getLifecycle().addObserver(youtubePlayerView);
-
         youtubePlayerView.setEnableAutomaticInitialization(false);
 
-        // Load video link from Firebase, then initialize player with options
+        // Load video link from Firebase, then initialize player
         databaseRef.child("videoLink").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -104,11 +115,9 @@ public class GuideFloods extends AppCompatActivity {
                         public void onEnterFullscreen(@NonNull View fullscreenView, @NonNull Function0<Unit> exitFullscreen) {
                             youtubeContainer.setVisibility(View.GONE);
                             ViewGroup decorView = (ViewGroup) getWindow().getDecorView();
-
                             decorView.addView(fullscreenView, new ViewGroup.LayoutParams(
                                     ViewGroup.LayoutParams.MATCH_PARENT,
                                     ViewGroup.LayoutParams.MATCH_PARENT));
-
                         }
 
                         @Override
@@ -134,15 +143,17 @@ public class GuideFloods extends AppCompatActivity {
                         }
                     });
                 } else {
-                    // no video link
+                    Log.d(TAG, "No videoLink found in Firebase.");
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Firebase videoLink read cancelled: " + error.getMessage());
+            }
         });
 
-        // Button popups
+        // Button actions: Before/During show image/text; After goes to Recover
         btnBeforeFlood.setOnClickListener(v -> showGuidePopup("before"));
         btnDuringFlood.setOnClickListener(v -> showGuidePopup("during"));
         btnAfterFlood.setOnClickListener(v -> startActivity(new Intent(GuideFloods.this, Recover.class)));
@@ -157,21 +168,117 @@ public class GuideFloods extends AppCompatActivity {
         });
     }
 
+    /**
+     * Defensive showGuidePopup - loads 'before' or 'during' from Firebase.
+     * If the DB value is a URL (http/https or Google Drive link) it will show an image
+     * in a dialog. Otherwise falls back to showing text.
+     */
     private void showGuidePopup(String type) {
         databaseRef.child(type).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String text = snapshot.getValue(String.class);
+                String value = snapshot.getValue(String.class);
                 String title = type.equals("before") ? "Before a Flood" : "During a Flood";
-                new AlertDialog.Builder(GuideFloods.this)
+                Log.d(TAG, "showGuidePopup: type=" + type + " rawValue=" + value);
+
+                if (value == null || value.trim().isEmpty()) {
+                    Toast.makeText(GuideFloods.this, "No data found for: " + type, Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(GuideFloods.this)
+                            .setTitle(title)
+                            .setMessage("No data available.")
+                            .setPositiveButton("OK", (d, w) -> d.dismiss())
+                            .show();
+                    return;
+                }
+
+                String trimmed = value.trim();
+
+                boolean looksLikeUrl = (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.contains("drive.google.com"));
+
+                if (!looksLikeUrl) {
+                    // Not a URL -> show text message (fallback)
+                    new AlertDialog.Builder(GuideFloods.this)
+                            .setTitle(title)
+                            .setMessage(trimmed)
+                            .setPositiveButton("OK", (d, w) -> d.dismiss())
+                            .show();
+                    return;
+                }
+
+                // It looks like a URL -> try to show it as an image
+                String finalUrl = convertGoogleDriveUrlIfNeeded(trimmed);
+                Log.d(TAG, "showGuidePopup: finalUrl=" + finalUrl);
+
+                // Build a scrollable container so large images can be viewed
+                ScrollView scrollView = new ScrollView(GuideFloods.this);
+                LinearLayout container = new LinearLayout(GuideFloods.this);
+                container.setOrientation(LinearLayout.VERTICAL);
+                int pad = dpToPx(8);
+                container.setPadding(pad, pad, pad, pad);
+
+                ImageView imageView = new ImageView(GuideFloods.this);
+                imageView.setAdjustViewBounds(true);
+                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                container.addView(imageView, new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                scrollView.addView(container);
+
+                AlertDialog dialog = new AlertDialog.Builder(GuideFloods.this)
                         .setTitle(title)
-                        .setMessage(text != null ? text : "No data available.")
-                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
-                        .show();
+                        .setView(scrollView)
+                        .setPositiveButton("OK", (d, w) -> d.dismiss())
+                        .create();
+
+                dialog.show();
+
+                // Expand dialog width close to screen width for better viewing
+                if (dialog.getWindow() != null) {
+                    int margin = dpToPx(16);
+                    int width = getResources().getDisplayMetrics().widthPixels - margin * 2;
+                    dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+                }
+
+                // Load with Glide and listen for errors
+                Glide.with(GuideFloods.this)
+                        .load(finalUrl)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                Log.w(TAG, "Glide load failed for url: " + finalUrl, e);
+                                runOnUiThread(() -> {
+                                    Toast.makeText(GuideFloods.this, "Failed to load image. Check URL or permissions.", Toast.LENGTH_LONG).show();
+                                    // show the raw text as fallback
+                                    new AlertDialog.Builder(GuideFloods.this)
+                                            .setTitle(title)
+                                            .setMessage(trimmed)
+                                            .setPositiveButton("OK", (d, w) -> d.dismiss())
+                                            .show();
+                                    try {
+                                        if (dialog.isShowing()) dialog.dismiss();
+                                    } catch (Exception ex) {
+                                        // ignore
+                                    }
+                                });
+                                return false; // allow Glide to handle placeholders
+                            }
+
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                Log.d(TAG, "Glide load succeeded for url: " + finalUrl);
+                                return false; // allow Glide to set the image into the ImageView
+                            }
+                        })
+                        .into(imageView);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Firebase read cancelled for '" + type + "': " + error.getMessage());
+                Toast.makeText(GuideFloods.this, "Firebase read failed: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -202,9 +309,53 @@ public class GuideFloods extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // release the player to avoid leaks
         if (youtubePlayerView != null) {
             youtubePlayerView.release();
         }
+    }
+
+    /**
+     * Convert common Google Drive share links to a direct-download URL Glide can use.
+     * If the URL is already a direct link (uc or googleusercontent) it returns it unchanged.
+     */
+    private String convertGoogleDriveUrlIfNeeded(String url) {
+        if (url == null) return null;
+
+        if (url.contains("drive.google.com/uc") || url.contains("googleusercontent.com")) {
+            return url;
+        }
+
+        try {
+            if (url.contains("drive.google.com") && url.contains("/file/d/")) {
+                int start = url.indexOf("/file/d/") + "/file/d/".length();
+                int end = url.indexOf("/", start);
+                if (end == -1) end = url.length();
+                String fileId = url.substring(start, end);
+                if (!fileId.isEmpty()) {
+                    return "https://drive.google.com/uc?export=download&id=" + fileId;
+                }
+            }
+
+            if (url.contains("drive.google.com") && url.contains("open?id=")) {
+                int start = url.indexOf("open?id=") + "open?id=".length();
+                int end = url.indexOf("&", start);
+                if (end == -1) end = url.length();
+                String fileId = url.substring(start, end);
+                if (!fileId.isEmpty()) {
+                    return "https://drive.google.com/uc?export=download&id=" + fileId;
+                }
+            }
+
+            return url;
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to convert Drive URL, returning original", e);
+            return url;
+        }
+    }
+
+    // convert dp to px for padding calculations
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
     }
 }

@@ -6,13 +6,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.safehaven.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 public class DisasterLandslides extends AppCompatActivity {
     private static final String TAG = "DisasterLandslides";
 
-    private ImageView disasterImage, btnBack;
-    private TextView disasterDescription;
+    private ImageView disasterImage; // existing top image in layout
+    private ImageView disasterImageFromDescription; // replacement for the previous TextView
+    private ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,14 +76,15 @@ public class DisasterLandslides extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
+        // find views
         disasterImage = findViewById(R.id.disasterImage);
-        disasterDescription = findViewById(R.id.disasterDescription);
+        disasterImageFromDescription = findViewById(R.id.disasterImageFromDescription);
 
-        DatabaseReference floodsRef = FirebaseDatabase.getInstance()
+        DatabaseReference landslidesRef = FirebaseDatabase.getInstance()
                 .getReference("DisasterGuides")
                 .child("Landslides");
 
-        floodsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        landslidesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
@@ -92,12 +92,14 @@ public class DisasterLandslides extends AppCompatActivity {
                     String description = null;
 
                     if (snapshot.exists()) {
+                        // support both "ImageUrl" and "imageUrl"
                         if (snapshot.child("ImageUrl").getValue() != null) {
                             imageUrl = snapshot.child("ImageUrl").getValue(String.class);
                         } else if (snapshot.child("imageUrl").getValue() != null) {
                             imageUrl = snapshot.child("imageUrl").getValue(String.class);
                         }
 
+                        // description field (may contain an image URL)
                         if (snapshot.child("description").getValue() != null) {
                             description = snapshot.child("description").getValue(String.class);
                         } else if (snapshot.child("Description").getValue() != null) {
@@ -105,19 +107,33 @@ public class DisasterLandslides extends AppCompatActivity {
                         }
                     }
 
-                    if (!TextUtils.isEmpty(description)) {
-                        disasterDescription.setText(description);
-                    } else {
-                        disasterDescription.setText("No description available.");
-                    }
-
+                    // Load top image if imageUrl exists (keeps previous behavior)
                     if (!TextUtils.isEmpty(imageUrl)) {
                         String finalUrl = convertGoogleDriveUrlIfNeeded(imageUrl);
                         Glide.with(DisasterLandslides.this)
                                 .load(finalUrl)
                                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                                 .into(disasterImage);
+                    } else {
+                        // optional: hide or set placeholder
+                        // disasterImage.setVisibility(View.GONE);
                     }
+
+                    // If description contains a URL (http/https or Google Drive) -> load into new ImageView
+                    if (!TextUtils.isEmpty(description) &&
+                            (description.startsWith("http://") || description.startsWith("https://") || description.contains("drive.google.com"))) {
+                        String finalDescUrl = convertGoogleDriveUrlIfNeeded(description);
+                        Glide.with(DisasterLandslides.this)
+                                .load(finalDescUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                                .into(disasterImageFromDescription);
+                    } else {
+                        // description isn't a URL: choose desired behavior (hide, placeholder, or do nothing)
+                        Log.d(TAG, "Description field is empty or does not contain a valid URL.");
+                        // Example: hide the view
+                        // disasterImageFromDescription.setVisibility(View.GONE);
+                    }
+
                 } catch (Exception e) {
                     Log.e(TAG, "Error parsing snapshot", e);
                 }
@@ -129,6 +145,7 @@ public class DisasterLandslides extends AppCompatActivity {
             }
         });
     }
+
     private String convertGoogleDriveUrlIfNeeded(String url) {
         if (url == null) return null;
 

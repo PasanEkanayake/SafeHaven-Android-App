@@ -1,11 +1,8 @@
 package com.example.safehaven;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,11 +18,8 @@ public class Recover extends AppCompatActivity {
         setContentView(R.layout.activity_recover);
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        // Set selected item for the current activity
         bottomNavigationView.setSelectedItemId(R.id.nav_recover);
 
-        // Set listener for item selection
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_recover) {
@@ -52,45 +46,47 @@ public class Recover extends AppCompatActivity {
         guideFires = findViewById(R.id.guideFires);
         guideHurricanes = findViewById(R.id.guideHurricanes);
 
-        guideFloods.setOnClickListener(v ->
-                showArticle("Flood Safety Guide", R.drawable.img_postguides_floods, R.drawable.img_postguides_guide_floods)
-        );
+        // Floods
+        guideFloods.setOnClickListener(v -> openGuide(
+                "Flood Aftermath Survival Guide: What to Do When the Waters Recede?",
+                R.drawable.img_postguides_floods,
+                "https://drive.google.com/uc?export=download&id=1F0SGvZWNkNVxNlk843L1oToCvbCW5NWK"
+        ));
 
-        guideLandslides.setOnClickListener(v ->
-                showArticle("Landslide Safety Guide", R.drawable.img_postguides_landslides, R.drawable.img_postguides_guide_landslides)
-        );
+        // Landslides
+        guideLandslides.setOnClickListener(v -> openGuide(
+                "Landslide Aftermath Survival Guide: Steps to Take When the Ground Stops Moving",
+                R.drawable.img_postguides_landslides,
+                "https://drive.google.com/uc?export=download&id=1FJKvcoGBMokPE0SgwOWF-LZ6Eiqp8h4Z"
+        ));
 
-        guideEarthquakes.setOnClickListener(v ->
-                showArticle("Earthquake Safety Guide", R.drawable.img_postguides_earthquakes, R.drawable.img_postguides_guide_earthquakes)
-        );
+        // Earthquakes
+        guideEarthquakes.setOnClickListener(v -> openGuide(
+                "Earthquake Aftermath Survival Guide: Steps to Take When the Shaking Stops",
+                R.drawable.img_postguides_earthquakes,
+                "https://drive.google.com/uc?export=download&id=1s9UVIPv-6v-ZAAQkGfNzLWzsSShydOR3"
+        ));
 
-        guideFires.setOnClickListener(v ->
-                showArticle("Fire Safety Guide", R.drawable.img_postguides_wildfires, R.drawable.img_postguides_guide_wildfires)
-        );
+        // Fires
+        guideFires.setOnClickListener(v -> openGuide(
+                "Wildfire Aftermath Survival Guide: Steps to Take When the Flames Have Passed",
+                R.drawable.img_postguides_wildfires,
+                "https://drive.google.com/uc?export=download&id=1cVgKCGoV7m3Z-E23YDN8W1-_Bvi09Vn-"
+        ));
 
-        guideHurricanes.setOnClickListener(v ->
-                showArticle("Hurricane Safety Guide", R.drawable.img_postguides_tsunamis, R.drawable.img_postguides_guide_tsunamis)
-        );
+        // Hurricanes / Tsunamis
+        guideHurricanes.setOnClickListener(v -> openGuide(
+                "Tsunami Aftermath Survival Guide: Steps to Take When the Waves Recede",
+                R.drawable.img_postguides_tsunamis,
+                "https://drive.google.com/uc?export=download&id=1jaN3wMknX5WYjCd3t_cZBztu7E8VNLz5"
+        ));
     }
 
-    private void showArticle(String title, int mainImage, int bodyImage) {
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.popup_article);
-
-        TextView articleTitle = dialog.findViewById(R.id.articleTitle);
-        ImageView articleMainImage = dialog.findViewById(R.id.articleMainImage);
-        ImageView articleBodyImage = dialog.findViewById(R.id.articleBodyImage);
-
-        articleTitle.setText(title);
-        articleMainImage.setImageResource(mainImage);
-        articleBodyImage.setImageResource(bodyImage);
-
-        // Expand dialog to match parent
-        dialog.getWindow().setLayout(
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-                android.view.ViewGroup.LayoutParams.MATCH_PARENT
-        );
-
-        dialog.show();
+    private void openGuide(String title, int mainImage, String bodyImageUrl) {
+        Intent intent = new Intent(this, GuideDetails.class);
+        intent.putExtra("title", title);
+        intent.putExtra("mainImage", mainImage);
+        intent.putExtra("bodyImageUrl", bodyImageUrl);
+        startActivity(intent);
     }
 }

@@ -79,16 +79,19 @@
             <ImageView
                 android:id="@+id/disasterImage"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="200dp"
+                android:scaleType="fitXY"/>
 
             <!-- Description -->
-            <TextView
-                android:id="@+id/disasterDescription"
+            <ImageView
+                android:id="@+id/disasterImageFromDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:padding="15dp"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:contentDescription="Description Body"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
 
         </LinearLayout>
     </ScrollView>

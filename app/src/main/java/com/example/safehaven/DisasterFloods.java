@@ -6,13 +6,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.example.safehaven.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 public class DisasterFloods extends AppCompatActivity {
     private static final String TAG = "FloodDetailActivity";
 
-    private ImageView disasterImage, btnBack;
-    private TextView disasterDescription;
+    private ImageView disasterImage;
+    private ImageView disasterImageFromDescription;
+    private ImageView btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +77,7 @@ public class DisasterFloods extends AppCompatActivity {
         });
 
         disasterImage = findViewById(R.id.disasterImage);
-        disasterDescription = findViewById(R.id.disasterDescription);
+        disasterImageFromDescription = findViewById(R.id.disasterImageFromDescription);
 
         DatabaseReference floodsRef = FirebaseDatabase.getInstance()
                 .getReference("DisasterGuides")
@@ -105,12 +104,6 @@ public class DisasterFloods extends AppCompatActivity {
                         }
                     }
 
-                    if (!TextUtils.isEmpty(description)) {
-                        disasterDescription.setText(description);
-                    } else {
-                        disasterDescription.setText("No description available.");
-                    }
-
                     if (!TextUtils.isEmpty(imageUrl)) {
                         String finalUrl = convertGoogleDriveUrlIfNeeded(imageUrl);
                         Glide.with(DisasterFloods.this)
@@ -118,6 +111,18 @@ public class DisasterFloods extends AppCompatActivity {
                                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
                                 .into(disasterImage);
                     }
+
+                    if (!TextUtils.isEmpty(description) &&
+                            (description.startsWith("http://") || description.startsWith("https://") || description.contains("drive.google.com"))) {
+                        String finalDescUrl = convertGoogleDriveUrlIfNeeded(description);
+                        Glide.with(DisasterFloods.this)
+                                .load(finalDescUrl)
+                                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                                .into(disasterImageFromDescription);
+                    } else {
+                        Log.d(TAG, "Description field is empty or does not contain a valid URL.");
+                    }
+
                 } catch (Exception e) {
                     Log.e(TAG, "Error parsing snapshot", e);
                 }
@@ -129,6 +134,7 @@ public class DisasterFloods extends AppCompatActivity {
             }
         });
     }
+
     private String convertGoogleDriveUrlIfNeeded(String url) {
         if (url == null) return null;
 

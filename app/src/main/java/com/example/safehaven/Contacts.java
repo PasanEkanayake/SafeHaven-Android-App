@@ -65,7 +65,7 @@ public class Contacts extends AppCompatActivity {
         // Set click listeners to dial numbers
         ambulance.setOnClickListener(v -> dialNumber("1990"));
         fire.setOnClickListener(v -> dialNumber("110"));
-        disaster.setOnClickListener(v -> dialNumber("+94112136222")); // no spaces
+        disaster.setOnClickListener(v -> dialNumber("+94112136222"));
         police.setOnClickListener(v -> dialNumber("119"));
 
     }
