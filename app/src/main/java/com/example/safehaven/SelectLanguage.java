@@ -43,7 +43,7 @@ public class SelectLanguage extends AppCompatActivity {
             // Go to Next Page
             Intent intent = new Intent(SelectLanguage.this, UserRegister.class);
             startActivity(intent);
-            finish(); // close language selection so user can't go back
+            finish(); // close LanguageSelection so user can't go back
         };
 
         sinhalaButton.setOnClickListener(languageClickListener);

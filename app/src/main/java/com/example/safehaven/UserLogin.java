@@ -31,8 +31,8 @@ public class UserLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
 
-        emailOrUsernameInput = findViewById(R.id.loginEmailInput);   // For email (users) or username (admins)
-        phoneOrPasswordInput = findViewById(R.id.loginPhoneInput);  // For phone (users) or password (admins)
+        emailOrUsernameInput = findViewById(R.id.loginEmailInput);
+        phoneOrPasswordInput = findViewById(R.id.loginPhoneInput);
         loginButton = findViewById(R.id.loginButton);
         registerRedirectButton = findViewById(R.id.registerRedirectButton);
 

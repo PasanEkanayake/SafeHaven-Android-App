@@ -53,9 +53,6 @@ public class GuideLandslide extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide_landslide);
 
-        // NOTE: Ensure AndroidManifest.xml contains:
-        // <uses-permission android:name="android.permission.INTERNET"/>
-
         // Initialize views
         btnBack = findViewById(R.id.btnBack);
         youtubeContainer = findViewById(R.id.youtube_container);
@@ -155,7 +152,6 @@ public class GuideLandslide extends AppCompatActivity {
             }
         });
 
-        // Button popups: Before/During show image/text; After goes to Recover
         btnBeforeLandslide.setOnClickListener(v -> showGuidePopup("before"));
         btnDuringLandslide.setOnClickListener(v -> showGuidePopup("during"));
         btnAfterLandslide.setOnClickListener(v -> startActivity(new Intent(GuideLandslide.this, Recover.class)));
@@ -170,11 +166,6 @@ public class GuideLandslide extends AppCompatActivity {
         });
     }
 
-    /**
-     * Defensive showGuidePopup - loads 'before' or 'during' from Firebase.
-     * If the DB value is a URL (http/https or Google Drive link) it will show an image
-     * in a dialog. Otherwise falls back to showing text.
-     */
     private void showGuidePopup(String type) {
         databaseRef.child(type).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -198,7 +189,6 @@ public class GuideLandslide extends AppCompatActivity {
                 boolean looksLikeUrl = (trimmed.startsWith("http://") || trimmed.startsWith("https://") || trimmed.contains("drive.google.com"));
 
                 if (!looksLikeUrl) {
-                    // Not a URL -> show text message (fallback)
                     new AlertDialog.Builder(GuideLandslide.this)
                             .setTitle(title)
                             .setMessage(trimmed)
@@ -207,11 +197,9 @@ public class GuideLandslide extends AppCompatActivity {
                     return;
                 }
 
-                // It looks like a URL -> try to show it as an image
                 String finalUrl = convertGoogleDriveUrlIfNeeded(trimmed);
                 Log.d(TAG, "showGuidePopup: finalUrl=" + finalUrl);
 
-                // Build a scrollable container so large images can be viewed
                 ScrollView scrollView = new ScrollView(GuideLandslide.this);
                 LinearLayout container = new LinearLayout(GuideLandslide.this);
                 container.setOrientation(LinearLayout.VERTICAL);
@@ -235,14 +223,12 @@ public class GuideLandslide extends AppCompatActivity {
 
                 dialog.show();
 
-                // Expand dialog width close to screen width for better viewing
                 if (dialog.getWindow() != null) {
                     int margin = dpToPx(16);
                     int width = getResources().getDisplayMetrics().widthPixels - margin * 2;
                     dialog.getWindow().setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT);
                 }
 
-                // Load with Glide and listen for errors
                 Glide.with(GuideLandslide.this)
                         .load(finalUrl)
                         .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
@@ -264,13 +250,13 @@ public class GuideLandslide extends AppCompatActivity {
                                         // ignore
                                     }
                                 });
-                                return false; // allow Glide to handle placeholders
+                                return false;
                             }
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 Log.d(TAG, "Glide load succeeded for url: " + finalUrl);
-                                return false; // allow Glide to set the image into the ImageView
+                                return false;
                             }
                         })
                         .into(imageView);
@@ -316,10 +302,6 @@ public class GuideLandslide extends AppCompatActivity {
         }
     }
 
-    /**
-     * Convert common Google Drive share links to a direct-download URL Glide can use.
-     * If the URL is already a direct link (uc or googleusercontent) it returns it unchanged.
-     */
     private String convertGoogleDriveUrlIfNeeded(String url) {
         if (url == null) return null;
 

@@ -74,7 +74,7 @@ public class Recover extends AppCompatActivity {
                 "https://drive.google.com/uc?export=download&id=1cVgKCGoV7m3Z-E23YDN8W1-_Bvi09Vn-"
         ));
 
-        // Hurricanes / Tsunamis
+        // Tsunamis
         guideHurricanes.setOnClickListener(v -> openGuide(
                 "Tsunami Aftermath Survival Guide: Steps to Take When the Waves Recede",
                 R.drawable.img_postguides_tsunamis,

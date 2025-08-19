@@ -28,7 +28,6 @@
                 android:layout_marginTop="40dp"
                 android:contentDescription="App Logo"/>
 
-            <!-- Small description about Registration & Privacy -->
             <TextView
                 android:id="@+id/privacyInfo1"
                 android:layout_width="match_parent"
@@ -49,7 +48,6 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center"/>
 
-            <!-- Optional Registration Form -->
             <LinearLayout
                 android:id="@+id/registrationForm"
                 android:layout_width="match_parent"
@@ -84,14 +82,12 @@
                     android:layout_marginTop="8dp"
                     android:padding="10dp"/>
 
-                <!-- Sri Lanka District Dropdown -->
                 <Spinner
                     android:id="@+id/districtSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"/>
 
-                <!-- Register Button Centered -->
                 <Button
                     android:id="@+id/registerButton"
                     android:layout_width="wrap_content"
@@ -116,7 +112,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Buttons -->
     <RelativeLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
@@ -124,7 +119,6 @@
         android:layout_alignParentBottom="true"
         android:padding="16dp">
 
-        <!-- Back Button at bottom-left -->
         <Button
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
@@ -135,7 +129,6 @@
             android:textColor="@android:color/white"
             android:layout_alignParentStart="true"/>
 
-        <!-- Next Button at bottom-right -->
         <Button
             android:id="@+id/nextButton"
             android:layout_width="wrap_content"

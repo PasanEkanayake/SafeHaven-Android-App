@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.chip.Chip;
@@ -29,7 +28,6 @@ import org.maplibre.android.geometry.LatLng;
 import org.maplibre.android.maps.MapView;
 import org.maplibre.android.maps.MapLibreMap;
 import org.maplibre.android.maps.OnMapReadyCallback;
-import org.maplibre.android.maps.Style;
 import org.maplibre.android.annotations.MarkerOptions;
 
 import java.util.ArrayList;
@@ -105,7 +103,6 @@ public class Locations extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        // Initialize views
         mapView = findViewById(R.id.mapView);
         recyclerView = findViewById(R.id.locationsRecycler);
         searchEditText = findViewById(R.id.searchEditText);
@@ -120,7 +117,6 @@ public class Locations extends AppCompatActivity {
             public void onMapReady(@NonNull MapLibreMap mapboxMapInstance) {
                 mapboxMap = mapboxMapInstance;
                 mapboxMap.setStyle("https://demotiles.maplibre.org/style.json", style -> {
-                    // Map ready -> load Firebase data
                     loadLocationsFromFirebase();
                 });
             }
@@ -145,7 +141,6 @@ public class Locations extends AppCompatActivity {
             }
         });
 
-        // Chip group listener
         chipGroupCategories.setOnCheckedChangeListener((group, checkedId) -> {
             Chip chip = group.findViewById(checkedId);
             if (chip != null) {
@@ -154,7 +149,6 @@ public class Locations extends AppCompatActivity {
             }
         });
 
-        // Map/List toggle
         toggleMapList.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (checkedId == R.id.btnMap && isChecked) {
                 mapView.setVisibility(View.VISIBLE);
@@ -165,7 +159,6 @@ public class Locations extends AppCompatActivity {
             }
         });
 
-        // Floating button (recenter to first location)
         fabLocate.setOnClickListener(v -> {
             if (mapboxMap != null && !locationsList.isEmpty()) {
                 LocationModel first = locationsList.get(0);
@@ -181,7 +174,7 @@ public class Locations extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 locationsList.clear();
                 if (mapboxMap != null) {
-                    mapboxMap.clear(); // clear old markers
+                    mapboxMap.clear();
                 }
                 for (DataSnapshot locSnapshot : snapshot.getChildren()) {
                     LocationModel location = locSnapshot.getValue(LocationModel.class);
@@ -189,12 +182,11 @@ public class Locations extends AppCompatActivity {
                         locationsList.add(location);
                     }
                 }
-                applyFilters(); // apply search + filter to update UI
+                applyFilters();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // handle error if needed
             }
         });
     }

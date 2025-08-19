@@ -86,7 +86,6 @@ public class ManageDisasterGuides extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-        // Init Views
         spinnerType = findViewById(R.id.spinnerType);
         editImageUrl = findViewById(R.id.imageUrl);
         editDescription = findViewById(R.id.editNewsBody);

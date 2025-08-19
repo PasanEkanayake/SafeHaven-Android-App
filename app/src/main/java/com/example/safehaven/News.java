@@ -1,7 +1,6 @@
 package com.example.safehaven;
 
 public class News {
-    // Field names must match the keys in Firebase: title, imageUrl, newsBody, newsBodyUrl, videoLink
     public String title;
     public String imageUrl;
     public String newsBody;

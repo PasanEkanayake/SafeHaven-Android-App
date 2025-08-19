@@ -161,7 +161,6 @@
             android:text="List"/>
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    <!-- Container for MapView and List (swap visibility in code) -->
     <FrameLayout
         android:id="@+id/mapListContainer"
         android:layout_width="match_parent"
@@ -176,7 +175,6 @@
             android:layout_height="match_parent"
             android:visibility="visible" />
 
-        <!-- RecyclerView list (shown when List is selected) -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/locationsRecycler"
             android:layout_width="match_parent"
@@ -185,7 +183,6 @@
             tools:listitem="@layout/item_location_card" />
     </FrameLayout>
 
-    <!-- Floating action: recenter / add new location -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabLocate"
         android:layout_width="wrap_content"

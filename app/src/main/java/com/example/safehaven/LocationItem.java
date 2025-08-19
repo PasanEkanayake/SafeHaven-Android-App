@@ -12,7 +12,7 @@ public class LocationItem {
     public String createdBy;
     public long timestamp;
 
-    public LocationItem() { } // required
+    public LocationItem() { }
 
     public LocationItem(String id, String name, double lat, double lng,
                         String category, String address, String phone,

@@ -1,7 +1,6 @@
 package com.example.safehaven;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,8 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,7 +117,6 @@ public class ManageSurvivalGuides extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // Save/Update Button
         btnSaveGuide.setOnClickListener(v -> saveOrUpdateGuide());
     }
 
@@ -138,7 +133,6 @@ public class ManageSurvivalGuides extends AppCompatActivity {
                     duringGuide.setText(during != null ? during : "");
                     etYoutubeLink.setText(videoLink != null ? videoLink : "");
                 } else {
-                    // No data, clear fields
                     beforeGuide.setText("");
                     duringGuide.setText("");
                     etYoutubeLink.setText("");

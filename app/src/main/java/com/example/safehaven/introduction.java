@@ -31,7 +31,6 @@ public class introduction extends AppCompatActivity {
 
         Button backButton = findViewById(R.id.backButton);
 
-        // Back button → go to previous page
         backButton.setOnClickListener(v -> {
             startActivity(new Intent(introduction.this, UserRegister.class));
             finish();
@@ -42,7 +41,7 @@ public class introduction extends AppCompatActivity {
 
         finishButton.setOnClickListener(v -> {
             SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean("introFinished", true); // user finished intro
+            editor.putBoolean("introFinished", true);
             editor.apply();
 
             // Go to Home

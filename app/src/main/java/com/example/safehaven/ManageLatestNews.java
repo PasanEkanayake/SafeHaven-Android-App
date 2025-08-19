@@ -76,7 +76,7 @@ public class ManageLatestNews extends AppCompatActivity {
         editImageUrl = findViewById(R.id.imageUrl);
         editNewsTitle = findViewById(R.id.editNewsTitle);
         editNewsBody = findViewById(R.id.editNewsBody);
-        editNewsBodyUrl = findViewById(R.id.newsBodyUrl);  // ✅ Added
+        editNewsBodyUrl = findViewById(R.id.newsBodyUrl);
         editVideoLink = findViewById(R.id.editVideoLink);
         btnSaveNews = findViewById(R.id.btnSaveNews);
         progressBar = findViewById(R.id.progressBar);
@@ -91,7 +91,7 @@ public class ManageLatestNews extends AppCompatActivity {
         String imageUrl = editImageUrl.getText().toString().trim();
         String title = editNewsTitle.getText().toString().trim();
         String newsBody = editNewsBody.getText().toString().trim();
-        String newsBodyUrl = editNewsBodyUrl.getText().toString().trim(); // ✅ Added
+        String newsBodyUrl = editNewsBodyUrl.getText().toString().trim();
         String videoLink = editVideoLink.getText().toString().trim();
 
         if (title.isEmpty() || newsBody.isEmpty() || imageUrl.isEmpty()) {

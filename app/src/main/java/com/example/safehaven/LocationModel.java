@@ -3,12 +3,11 @@ package com.example.safehaven;
 public class LocationModel {
     private String name;
     private String type;
-    private double latitude;   // <-- Use double
-    private double longitude;  // <-- Use double
+    private double latitude;
+    private double longitude;
     private String phone;
 
     public LocationModel() {
-        // Default constructor required for calls to DataSnapshot.getValue(LocationModel.class)
     }
 
     public LocationModel(String name, String type, double latitude, double longitude, String phone) {

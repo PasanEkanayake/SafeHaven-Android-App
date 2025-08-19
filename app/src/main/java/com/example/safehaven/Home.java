@@ -46,7 +46,6 @@ public class Home extends AppCompatActivity {
             return insets;
         });
 
-        // === Initialize Views ===
         contactsButton = findViewById(R.id.contactsButton);
         settingsButton = findViewById(R.id.settings);
         survivalguides = findViewById(R.id.survivalguides);
@@ -64,7 +63,6 @@ public class Home extends AppCompatActivity {
         newsBody1 = findViewById(R.id.newsBody1);
         newsBody2 = findViewById(R.id.newsBody2);
 
-        // === Language Greeting ===
         String language = getSharedPreferences("SafeHavenPrefs", MODE_PRIVATE)
                 .getString("language", "English");
         TextView welcomeMessage = findViewById(R.id.welcomeMessage);
@@ -80,7 +78,6 @@ public class Home extends AppCompatActivity {
                 break;
         }
 
-        // === Bottom Navigation ===
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -103,7 +100,6 @@ public class Home extends AppCompatActivity {
             return false;
         });
 
-        // === Button Clicks ===
         contactsButton.setOnClickListener(v -> startActivity(new Intent(Home.this, Contacts.class)));
         settingsButton.setOnClickListener(v -> startActivity(new Intent(Home.this, Settings.class)));
         survivalguides.setOnClickListener(v -> startActivity(new Intent(Home.this, SurvivalGuides.class)));
@@ -112,11 +108,9 @@ public class Home extends AppCompatActivity {
         locationsButton.setOnClickListener(v -> startActivity(new Intent(Home.this, Locations.class)));
         moreNewsButton.setOnClickListener(v -> startActivity(new Intent(Home.this, ViewNewsArticles.class)));
 
-        // === Load Latest News from Firebase ===
         loadLatestNews();
     }
 
-    // Load 2 latest news
     private void loadLatestNews() {
         DatabaseReference newsRef = FirebaseDatabase.getInstance().getReference("LatestNews");
 
@@ -127,9 +121,9 @@ public class Home extends AppCompatActivity {
                 for (DataSnapshot newsSnapshot : snapshot.getChildren()) {
                     String imageUrl = newsSnapshot.child("imageUrl").getValue(String.class);
                     String title = newsSnapshot.child("title").getValue(String.class);
-                    String body = newsSnapshot.child("newsBody").getValue(String.class); // still used for preview
+                    String body = newsSnapshot.child("newsBody").getValue(String.class);
                     String video = newsSnapshot.child("videoLink").getValue(String.class);
-                    String newsBodyUrl = newsSnapshot.child("newsBodyUrl").getValue(String.class); // ✅ new field
+                    String newsBodyUrl = newsSnapshot.child("newsBodyUrl").getValue(String.class);
 
                     if (index == 0) {
                         setNewsCard(newsImage1, newsTitle1, newsBody1, imageUrl, title, body);
@@ -149,11 +143,10 @@ public class Home extends AppCompatActivity {
         });
     }
 
-    // Set preview card
     private void setNewsCard(ImageView img, TextView titleTv, TextView bodyTv,
                              String imgUrl, String title, String body) {
         titleTv.setText(title);
-        bodyTv.setText(truncateText(body, 80)); // show only first 80 chars
+        bodyTv.setText(truncateText(body, 80));
         Glide.with(this).load(imgUrl).into(img);
     }
 
