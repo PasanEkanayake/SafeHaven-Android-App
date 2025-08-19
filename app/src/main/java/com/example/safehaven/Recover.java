@@ -60,7 +60,6 @@ public class Recover extends AppCompatActivity {
                 "https://drive.google.com/uc?export=download&id=1FJKvcoGBMokPE0SgwOWF-LZ6Eiqp8h4Z"
         ));
 
-        // Earthquakes
         guideEarthquakes.setOnClickListener(v -> openGuide(
                 "Earthquake Aftermath Survival Guide: Steps to Take When the Shaking Stops",
                 R.drawable.img_postguides_earthquakes,
