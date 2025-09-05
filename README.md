@@ -16,3 +16,7 @@ Application UIs
 ![Image](https://github.com/user-attachments/assets/553a9252-9b92-4ee1-b273-d3271502e122)
 
 ![Image](https://github.com/user-attachments/assets/f8514887-c273-49b7-940c-0276f16cae51)
+
+![Image](https://github.com/user-attachments/assets/ccf33334-da05-4554-869f-7bf1bffd72c5)
+
+![Image](https://github.com/user-attachments/assets/43b4633a-093b-4686-8be8-e7a3468cffbf)
