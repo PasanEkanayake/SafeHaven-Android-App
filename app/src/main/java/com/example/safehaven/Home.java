@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -109,6 +110,27 @@ public class Home extends AppCompatActivity {
         moreNewsButton.setOnClickListener(v -> startActivity(new Intent(Home.this, ViewNewsArticles.class)));
 
         loadLatestNews();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                handleExit();
+            }
+        });
+
+    }
+
+    private void handleExit() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Exit SafeHaven")
+                .setMessage("Are you sure you want to exit the app?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    dialog.dismiss();
+                    finishAffinity();
+                    System.exit(0);
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void loadLatestNews() {
