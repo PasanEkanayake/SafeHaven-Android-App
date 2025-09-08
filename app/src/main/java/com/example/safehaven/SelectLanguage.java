@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -49,5 +50,27 @@ public class SelectLanguage extends AppCompatActivity {
         sinhalaButton.setOnClickListener(languageClickListener);
         englishButton.setOnClickListener(languageClickListener);
         tamilButton.setOnClickListener(languageClickListener);
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                handleExit();
+            }
+        });
+
     }
+
+    private void handleExit() {
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Exit SafeHaven")
+                .setMessage("Are you sure you want to exit the app?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    dialog.dismiss();
+                    finishAffinity();
+                    System.exit(0);
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
 }
